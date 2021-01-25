@@ -5,30 +5,32 @@ import java.util.Map;
 
 import javax.ws.rs.NotFoundException;
 
-import com.bugtracker.database.enums.Tables;
+import com.bugtracker.database.enums.ETables;
 
 /**
  * Utils for {@link QueryResultParser}. Mainly used to retrieve the
- * corresponding parser for an {@link Tables}.
+ * corresponding parser for an {@link ETables}.
  */
 public class QueryResultParserUtils {
-	private static final Map<Tables, QueryResultParser> parserByTableName;
+	private static final Map<ETables, QueryResultParser> PARSER_BY_TABLE_NAME;
+
+	// TODO : Implement remaining parsers
 	static {
-		parserByTableName = new HashMap<>();
-		parserByTableName.put(Tables.USERS, null);
-		parserByTableName.put(Tables.STATUS, null);
-		parserByTableName.put(Tables.LABELS, null);
-		parserByTableName.put(Tables.TICKETS, new TicketsQueryResultParser());
-		parserByTableName.put(Tables.TICKET_COMMENTS, null);
-		parserByTableName.put(Tables.WORKFLOW, null);
-		parserByTableName.put(Tables.TICKET_TO_LABELS, null);
+		PARSER_BY_TABLE_NAME = new HashMap<>();
+		PARSER_BY_TABLE_NAME.put(ETables.USERS, null);
+		PARSER_BY_TABLE_NAME.put(ETables.STATUS, null);
+		PARSER_BY_TABLE_NAME.put(ETables.LABELS, null);
+		PARSER_BY_TABLE_NAME.put(ETables.TICKETS, new TicketsQueryResultParser());
+		PARSER_BY_TABLE_NAME.put(ETables.TICKET_COMMENTS, null);
+		PARSER_BY_TABLE_NAME.put(ETables.WORKFLOW, null);
+		PARSER_BY_TABLE_NAME.put(ETables.TICKET_TO_LABELS, null);
 	}
 
 	/**
 	 * Returns the parser for the given table.
 	 */
-	public static QueryResultParser getParserForTable(Tables table) {
-		QueryResultParser parser = parserByTableName.get(table);
+	public static QueryResultParser getParserForTable(ETables table) {
+		QueryResultParser parser = PARSER_BY_TABLE_NAME.get(table);
 		if (parser == null) {
 			throw new NotFoundException("No parser available for table " + table.name);
 		}

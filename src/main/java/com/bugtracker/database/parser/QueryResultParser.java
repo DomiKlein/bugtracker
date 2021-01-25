@@ -1,12 +1,25 @@
 package com.bugtracker.database.parser;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
-import com.bugtracker.database.results.QueryResult;
+import com.bugtracker.database.results.IQueryResult;
 
 /** Abstract class to handle a {@link ResultSet} from a SQL query. */
-public interface QueryResultParser<T extends QueryResult> {
+public abstract class QueryResultParser<T extends IQueryResult> {
 
-	/** Parses the result from the given {@link ResultSet}. */
-	public T parseInfoFromResult(ResultSet resultSet);
+	public Set<T> parseResultSet(ResultSet resultSet) throws SQLException {
+		Set<T> results = new HashSet<>();
+
+		while (resultSet.next()) {
+			results.add(parseSingleRow(resultSet));
+		}
+
+		return results;
+	}
+
+	/** Returns the parsed result from the {@link ResultSet}. */
+	public abstract T parseSingleRow(ResultSet resultSet) throws SQLException;
 }

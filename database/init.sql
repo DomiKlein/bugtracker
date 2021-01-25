@@ -29,10 +29,10 @@ CREATE TABLE IF NOT EXISTS Tickets (
     statusId INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     creationTimestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (ticketId),
-    FOREIGN KEY (creatorId) REFERENCES Users (userId),
-    FOREIGN KEY (assigneeId) REFERENCES Users (userId),
-    FOREIGN KEY (statusId) REFERENCES Status (statusId)
+    PRIMARY KEY (ticketId) -- ,
+    -- FOREIGN KEY (creatorId) REFERENCES Users (userId),
+    -- FOREIGN KEY (assigneeId) REFERENCES Users (userId),
+    -- FOREIGN KEY (statusId) REFERENCES Status (statusId)
 );
 
 CREATE TABLE IF NOT EXISTS TicketComments (

@@ -1,6 +1,6 @@
 package com.bugtracker.database.enums;
 
-public enum Tables {
+public enum ETables {
 	USERS("Users"), //
 	STATUS("Status"), //
 	LABELS("Labels"), //
@@ -13,7 +13,7 @@ public enum Tables {
 	public final String name;
 
 	/** Constructor used to save values of enum. */
-	private Tables(String name) {
+	ETables(String name) {
 		this.name = name;
 	}
 }
