@@ -11,7 +11,8 @@ import org.apache.log4j.Logger;
 
 import com.bugtracker.database.enums.ETables;
 import com.bugtracker.database.parser.QueryResultParserUtils;
-import com.bugtracker.database.results.TicketQueryResult;
+import com.bugtracker.database.results.parsed.TicketParsedQueryResult;
+import com.bugtracker.mysql.results.MySQLQueryResult;
 
 public class DatabaseConnection implements Runnable {
 
@@ -42,14 +43,14 @@ public class DatabaseConnection implements Runnable {
 					LOGGER.info("Database connection was closed");
 					break;
 				}
-				TimeUnit.MINUTES.sleep(HEALTH_CHECK_INTERVAL_MINUTES);
+				TimeUnit.MINUTES.sleep(0);
 
 				// TODO : Remove this test code & uncomment stuff in SQL setup
 				databaseConnection.createStatement().execute(
-						"INSERT INTO Tickets (creatorId, assigneeId, statusId, title) VALUES ('0', '0', '0', 'Some Title')");
+						"INSERT INTO Tickets (creatorId, assigneeId, statusId, title, description) VALUES ('0', '0', '0', 'Some Title', 'Some Description')");
 				String sqlQuery = SQLQueryBuilder.createEmptyQuery().selectAll().from(ETables.TICKETS).build();
-				Set<TicketQueryResult> results = QueryResultParserUtils.getParserForTable(ETables.TICKETS)
-						.parseResultSet(databaseConnection.createStatement().executeQuery(sqlQuery));
+				Set<TicketParsedQueryResult> results = QueryResultParserUtils.getParserForTable(ETables.TICKETS)
+						.parseResult(new MySQLQueryResult(databaseConnection.createStatement().executeQuery(sqlQuery)));
 
 				continue;
 			} catch (SQLException e) {

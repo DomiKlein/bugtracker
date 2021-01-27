@@ -1,7 +1,17 @@
 package com.bugtracker.database.results;
 
-import com.bugtracker.database.enums.ETables;
+import java.awt.*;
+import java.util.Date;
 
 public interface IQueryResult {
-	ETables getTable();
+
+	boolean next();
+
+	Integer getInt(int columnIndex);
+
+	String getString(int columnIndex);
+
+	Date getTimestamp(int columnIndex);
+
+	Color getColor(int columnIndex);
 }

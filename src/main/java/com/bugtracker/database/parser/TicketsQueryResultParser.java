@@ -1,21 +1,21 @@
 package com.bugtracker.database.parser;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.bugtracker.database.results.IQueryResult;
+import com.bugtracker.database.results.parsed.TicketParsedQueryResult;
 
-import com.bugtracker.database.results.TicketQueryResult;
-
-public class TicketsQueryResultParser extends QueryResultParser<TicketQueryResult> {
+/** Parses a {@link TicketParsedQueryResult} from a {@link IQueryResult}. */
+public class TicketsQueryResultParser<T extends IQueryResult> extends QueryResultParser<T, TicketParsedQueryResult> {
 
 	@Override
-	public TicketQueryResult parseSingleRow(ResultSet resultSet) throws SQLException {
-		return new TicketQueryResult( //
-				resultSet.getInt(1), //
-				resultSet.getInt(2), //
-				resultSet.getInt(3), //
-				resultSet.getInt(4), //
-				resultSet.getString(5), //
-				resultSet.getTimestamp(6) //
+	public TicketParsedQueryResult parseSingleRow(T result) {
+		return new TicketParsedQueryResult( //
+				result.getInt(1), //
+				result.getInt(2), //
+				result.getInt(3), //
+				result.getInt(4), //
+				result.getString(5), //
+				result.getString(6), //
+				result.getTimestamp(7) //
 		);
 	}
 }

@@ -13,17 +13,16 @@ import com.bugtracker.database.enums.ETables;
  */
 public class QueryResultParserUtils {
 	private static final Map<ETables, QueryResultParser> PARSER_BY_TABLE_NAME;
-
-	// TODO : Implement remaining parsers
+	// TODO : Improve raw usages here
 	static {
 		PARSER_BY_TABLE_NAME = new HashMap<>();
-		PARSER_BY_TABLE_NAME.put(ETables.USERS, null);
-		PARSER_BY_TABLE_NAME.put(ETables.STATUS, null);
-		PARSER_BY_TABLE_NAME.put(ETables.LABELS, null);
+		PARSER_BY_TABLE_NAME.put(ETables.USERS, new UsersQueryResultParser());
+		PARSER_BY_TABLE_NAME.put(ETables.STATUS, new StatusQueryResultParser());
+		PARSER_BY_TABLE_NAME.put(ETables.LABELS, new LabelsQueryResultParser());
 		PARSER_BY_TABLE_NAME.put(ETables.TICKETS, new TicketsQueryResultParser());
-		PARSER_BY_TABLE_NAME.put(ETables.TICKET_COMMENTS, null);
-		PARSER_BY_TABLE_NAME.put(ETables.WORKFLOW, null);
-		PARSER_BY_TABLE_NAME.put(ETables.TICKET_TO_LABELS, null);
+		PARSER_BY_TABLE_NAME.put(ETables.TICKET_COMMENTS, new TicketCommentsQueryResultParser());
+		PARSER_BY_TABLE_NAME.put(ETables.WORKFLOW, new WorkflowQueryResultParser());
+		PARSER_BY_TABLE_NAME.put(ETables.TICKET_TO_LABELS, new TicketToLabelsQueryResultParser());
 	}
 
 	/**

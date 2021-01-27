@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS bugtracker;
 USE bugtracker;
 
 CREATE TABLE IF NOT EXISTS Users (
-    userId INT NOT NULL AUTO_INCREMENT,
+    userId INT UNSIGNED  NOT NULL AUTO_INCREMENT,
     username VARCHAR(64) NOT NULL,
     firstName VARCHAR(64) NOT NULL,
     lastName VARCHAR(64) NOT NULL,
@@ -10,24 +10,25 @@ CREATE TABLE IF NOT EXISTS Users (
 );
 
 CREATE TABLE IF NOT EXISTS Status (
-    statusId INT NOT NULL AUTO_INCREMENT,
+    statusId INT UNSIGNED  NOT NULL AUTO_INCREMENT,
     statusName VARCHAR(64) NOT NULL,
-    color CHAR(6) NOT NULL, 
+    color INT UNSIGNED  NOT NULL, 
     PRIMARY KEY (statusId)
 );
 
 CREATE TABLE IF NOT EXISTS Labels (
-    labelId INT NOT NULL AUTO_INCREMENT,
+    labelId INT UNSIGNED  NOT NULL AUTO_INCREMENT,
     labelName VARCHAR(64) NOT NULL,
     PRIMARY KEY (labelId)
 );
 
 CREATE TABLE IF NOT EXISTS Tickets (
-    ticketId INT NOT NULL AUTO_INCREMENT,
-    creatorId INT NOT NULL,
-    assigneeId INT NOT NULL,
-    statusId INT NOT NULL,
+    ticketId INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+    creatorId INT UNSIGNED  NOT NULL,
+    assigneeId INT UNSIGNED  NOT NULL,
+    statusId INT UNSIGNED  NOT NULL,
     title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
     creationTimestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (ticketId) -- ,
     -- FOREIGN KEY (creatorId) REFERENCES Users (userId),
@@ -36,10 +37,10 @@ CREATE TABLE IF NOT EXISTS Tickets (
 );
 
 CREATE TABLE IF NOT EXISTS TicketComments (
-    commentId INT NOT NULL,
-    ticketId INT NOT NULL,
-    creatorId INT NOT NULL,
-    content VARCHAR(255) NOT NULL,
+    commentId INT UNSIGNED  NOT NULL,
+    ticketId INT UNSIGNED  NOT NULL,
+    creatorId INT UNSIGNED  NOT NULL,
+    content TEXT NOT NULL,
     creationTimestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (commentId, ticketId),
     FOREIGN KEY (ticketId) REFERENCES Tickets (ticketId),
@@ -47,16 +48,16 @@ CREATE TABLE IF NOT EXISTS TicketComments (
 );
 
 CREATE TABLE IF NOT EXISTS Workflow (
-    statusId INT NOT NULL,
-    nextStatusId INT NOT NULL,
+    statusId INT UNSIGNED  NOT NULL,
+    nextStatusId INT UNSIGNED  NOT NULL,
     PRIMARY KEY (statusId, nextStatusId),
     FOREIGN KEY (statusId) REFERENCES Status (statusId),
     FOREIGN KEY (nextStatusId) REFERENCES Status (statusId)
 );
 
 CREATE TABLE IF NOT EXISTS TicketToLabels (
-    ticketId INT NOT NULL,
-    labelId INT NOT NULL,
+    ticketId INT UNSIGNED  NOT NULL,
+    labelId INT UNSIGNED  NOT NULL,
     PRIMARY KEY (ticketId, labelId),
     FOREIGN KEY (ticketId) REFERENCES Tickets (ticketId),
     FOREIGN KEY (labelId) REFERENCES Labels (labelId)

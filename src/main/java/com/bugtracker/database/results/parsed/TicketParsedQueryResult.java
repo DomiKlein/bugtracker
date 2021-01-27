@@ -1,11 +1,11 @@
-package com.bugtracker.database.results;
+package com.bugtracker.database.results.parsed;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import com.bugtracker.database.enums.ETables;
 
-/** The Java class which represents a entry in the Ticket table. */
-public class TicketQueryResult implements IQueryResult {
+/** The Java class which represents a entry in the Tickets table. */
+public class TicketParsedQueryResult implements IParsedQueryResult {
 
 	/** The unique ID of a ticket */
 	private final int ticketId;
@@ -22,17 +22,20 @@ public class TicketQueryResult implements IQueryResult {
 	/** The title of the ticket */
 	private final String title;
 
-	/** The timestamp when the ticket was created */
-	private final Timestamp creationTimestamp;
+	/** The description of the ticket */
+	private final String description;
 
-	/** Constructor */
-	public TicketQueryResult(int ticketId, int creatorId, int assigneeId, int statusId, String title,
-			Timestamp creationTimestamp) {
+	/** The timestamp when the ticket was created */
+	private final Date creationTimestamp;
+
+	public TicketParsedQueryResult(int ticketId, int creatorId, int assigneeId, int statusId, String title,
+			String description, Date creationTimestamp) {
 		this.ticketId = ticketId;
 		this.creatorId = creatorId;
 		this.assigneeId = assigneeId;
 		this.statusId = statusId;
 		this.title = title;
+		this.description = description;
 		this.creationTimestamp = creationTimestamp;
 	}
 
@@ -72,9 +75,16 @@ public class TicketQueryResult implements IQueryResult {
 	}
 
 	/**
+	 * @see #description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
 	 * @see #creationTimestamp
 	 */
-	public Timestamp getCreationTimestamp() {
+	public Date getCreationTimestamp() {
 		return creationTimestamp;
 	}
 
