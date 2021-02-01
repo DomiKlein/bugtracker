@@ -10,7 +10,11 @@ import org.apache.log4j.Logger;
 
 import com.bugtracker.database.results.IQueryResult;
 
-/** A wrapper class for a {@link ResultSet}. */
+/**
+ * Represents the results of a query on a imaginary database.
+ * <p>
+ * Wrapper class for a {@link ResultSet}.
+ */
 public class MySQLQueryResult implements IQueryResult {
 
 	private final ResultSet resultSet;

@@ -1,6 +1,7 @@
 package com.bugtracker.database.results.parsed;
 
 import java.awt.*;
+import java.util.Objects;
 
 import com.bugtracker.database.enums.ETables;
 
@@ -46,5 +47,23 @@ public class StatusParsedQueryResult implements IParsedQueryResult {
 	@Override
 	public ETables getTable() {
 		return ETables.STATUS;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		StatusParsedQueryResult that = (StatusParsedQueryResult) o;
+		return statusId == that.statusId && statusName.equals(that.statusName) && color.equals(that.color);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(statusId, statusName, color);
 	}
 }

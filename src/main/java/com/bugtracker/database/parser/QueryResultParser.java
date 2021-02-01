@@ -7,10 +7,10 @@ import com.bugtracker.database.results.IQueryResult;
 import com.bugtracker.database.results.parsed.IParsedQueryResult;
 
 /** Abstract class to handle a {@link IQueryResult} from a query. */
-public abstract class QueryResultParser<T extends IQueryResult, S extends IParsedQueryResult> {
+public abstract class QueryResultParser {
 
-	public Set<S> parseResult(T result) {
-		Set<S> results = new HashSet<>();
+	public final <T extends IParsedQueryResult> Set<T> parseResult(IQueryResult result) {
+		Set<T> results = new HashSet<>();
 
 		while (result.next()) {
 			results.add(parseSingleRow(result));
@@ -20,5 +20,5 @@ public abstract class QueryResultParser<T extends IQueryResult, S extends IParse
 	}
 
 	/** Returns the parsed result from the {@link IQueryResult}. */
-	public abstract S parseSingleRow(T result);
+	abstract <T extends IParsedQueryResult> T parseSingleRow(IQueryResult result);
 }

@@ -4,10 +4,10 @@ import com.bugtracker.database.results.IQueryResult;
 import com.bugtracker.database.results.parsed.TicketParsedQueryResult;
 
 /** Parses a {@link TicketParsedQueryResult} from a {@link IQueryResult}. */
-public class TicketsQueryResultParser<T extends IQueryResult> extends QueryResultParser<T, TicketParsedQueryResult> {
+public class TicketsQueryResultParser extends QueryResultParser {
 
 	@Override
-	public TicketParsedQueryResult parseSingleRow(T result) {
+	TicketParsedQueryResult parseSingleRow(IQueryResult result) {
 		return new TicketParsedQueryResult( //
 				result.getInt(1), //
 				result.getInt(2), //

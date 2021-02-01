@@ -13,7 +13,7 @@ import com.bugtracker.database.enums.ETables;
  */
 public class QueryResultParserUtils {
 	private static final Map<ETables, QueryResultParser> PARSER_BY_TABLE_NAME;
-	// TODO : Improve raw usages here
+
 	static {
 		PARSER_BY_TABLE_NAME = new HashMap<>();
 		PARSER_BY_TABLE_NAME.put(ETables.USERS, new UsersQueryResultParser());
@@ -29,10 +29,12 @@ public class QueryResultParserUtils {
 	 * Returns the parser for the given table.
 	 */
 	public static QueryResultParser getParserForTable(ETables table) {
-		QueryResultParser parser = PARSER_BY_TABLE_NAME.get(table);
+		QueryResultParser parser = PARSER_BY_TABLE_NAME.getOrDefault(table, null);
+
 		if (parser == null) {
 			throw new NotFoundException("No parser available for table " + table.name);
 		}
+
 		return parser;
 	}
 }

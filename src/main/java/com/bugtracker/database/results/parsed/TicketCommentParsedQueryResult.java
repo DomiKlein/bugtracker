@@ -1,6 +1,7 @@
 package com.bugtracker.database.results.parsed;
 
 import java.util.Date;
+import java.util.Objects;
 
 import com.bugtracker.database.enums.ETables;
 
@@ -57,5 +58,25 @@ public class TicketCommentParsedQueryResult implements IParsedQueryResult {
 	@Override
 	public ETables getTable() {
 		return ETables.TICKET_COMMENTS;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		TicketCommentParsedQueryResult that = (TicketCommentParsedQueryResult) o;
+		return commentId == that.commentId && creatorId == that.creatorId && content.equals(that.content)
+				&& creationTimestamp.equals(that.creationTimestamp);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(commentId, creatorId, content, creationTimestamp);
 	}
 }

@@ -1,5 +1,7 @@
 package com.bugtracker.database.results.parsed;
 
+import java.util.Objects;
+
 import com.bugtracker.database.enums.ETables;
 
 /** The Java class which represents a entry in the TicketToLabels table. */
@@ -33,5 +35,24 @@ public class TicketToLabelParsedQueryResult implements IParsedQueryResult {
 	@Override
 	public ETables getTable() {
 		return ETables.TICKET_TO_LABELS;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		TicketToLabelParsedQueryResult that = (TicketToLabelParsedQueryResult) o;
+		return ticketId == that.ticketId && labelId == that.labelId;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(ticketId, labelId);
 	}
 }

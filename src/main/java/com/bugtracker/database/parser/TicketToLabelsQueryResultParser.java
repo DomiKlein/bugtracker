@@ -6,12 +6,10 @@ import com.bugtracker.database.results.parsed.TicketToLabelParsedQueryResult;
 /**
  * Parses a {@link TicketToLabelParsedQueryResult} from a {@link IQueryResult}.
  */
-public class TicketToLabelsQueryResultParser<T extends IQueryResult>
-		extends
-			QueryResultParser<T, TicketToLabelParsedQueryResult> {
+public class TicketToLabelsQueryResultParser extends QueryResultParser {
 
 	@Override
-	public TicketToLabelParsedQueryResult parseSingleRow(T result) {
+	TicketToLabelParsedQueryResult parseSingleRow(IQueryResult result) {
 		return new TicketToLabelParsedQueryResult( //
 				result.getInt(1), //
 				result.getInt(2) //

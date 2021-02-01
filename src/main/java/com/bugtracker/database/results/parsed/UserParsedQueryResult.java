@@ -1,5 +1,7 @@
 package com.bugtracker.database.results.parsed;
 
+import java.util.Objects;
+
 import com.bugtracker.database.enums.ETables;
 
 /** The Java class which represents a entry in the Users table. */
@@ -55,5 +57,25 @@ public class UserParsedQueryResult implements IParsedQueryResult {
 	@Override
 	public ETables getTable() {
 		return ETables.USERS;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		UserParsedQueryResult that = (UserParsedQueryResult) o;
+		return userId == that.userId && username.equals(that.username) && firstName.equals(that.firstName)
+				&& lastName.equals(that.lastName);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(userId, username, firstName, lastName);
 	}
 }
