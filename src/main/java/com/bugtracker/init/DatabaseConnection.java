@@ -1,4 +1,4 @@
-package com.bugtracker.database;
+package com.bugtracker.init;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,14 +25,8 @@ public class DatabaseConnection implements Runnable {
 	/** Interval to check if database connection is still alive. */
 	private static final int HEALTH_CHECK_INTERVAL_MINUTES = 1;
 
-	/** The number of retires until the connection establishment actually fails */
-	private static final int MAX_NUMBER_OF_RETRIES = 3;
-
 	/** The seconds to wait for a retry if the connection cannot be established */
-	private static final int SECONDS_UNTIL_RETRY = 30;
-
-	/** The number of actual retries which failed */
-	private int failedConnectionAttempts = 0;
+	private static final int MINUTES_UNTIL_RETRY = 10;
 
 	/** Singleton database connection. */
 	public static Connection databaseConnection;
@@ -52,7 +46,6 @@ public class DatabaseConnection implements Runnable {
 				break;
 			} catch (InterruptedException e) {
 				LOGGER.warn("Database connection health check was interrupted", e);
-				break;
 			}
 		}
 		closeConnection();
@@ -62,43 +55,34 @@ public class DatabaseConnection implements Runnable {
 	 * Establishes a database connection.
 	 */
 	private void establishConnection() {
-		if (DatabaseConnection.databaseConnection == null) {
+		while (DatabaseConnection.databaseConnection == null) {
 			try {
 				Connection connection = DriverManager.getConnection(DATABASE_URL, DATABASE_USER,
 						DATABASE_USER_PASSWORD);
 				if (connection != null) {
 					DatabaseConnection.databaseConnection = connection;
 					LOGGER.info("Successfully connected to the MySQL database 'bugtracker'");
-				} else {
-					throw new SQLException("Unable to connect to database");
 				}
 			} catch (SQLException e) {
-				retry(e);
+				LOGGER.error(
+						"Failed to connect to MySQL database. Please check your Docker container. Automatic retry in "
+								+ MINUTES_UNTIL_RETRY
+								+ " minutes. For an earlier retry, please trigger a manual retry.");
+			} finally {
+				waitForNextTry();
 			}
 		}
 	}
 
 	/**
-	 * Waits for the {@linkplain #SECONDS_UNTIL_RETRY specified time interval} and
-	 * afterwards again tries to establish the connection to the database, but only
-	 * if we have not exceeded the {@link #MAX_NUMBER_OF_RETRIES}.
-	 * <p>
-	 * Will increase the {@linkplain #failedConnectionAttempts retries counter}.
+	 * Suspends the current thread for {@link #MINUTES_UNTIL_RETRY}.
 	 */
-	private void retry(SQLException exception) {
-		if (failedConnectionAttempts < MAX_NUMBER_OF_RETRIES) {
-			LOGGER.warn("Attempt to connect to the database failed. Will retry "
-					+ (MAX_NUMBER_OF_RETRIES - failedConnectionAttempts) + " more times");
-			failedConnectionAttempts++;
-			try {
-				TimeUnit.SECONDS.sleep(SECONDS_UNTIL_RETRY);
-			} catch (InterruptedException e) {
-				LOGGER.warn("Timer which waits for the next retry was interrupted", e);
-			}
-			establishConnection();
-			return;
+	private static void waitForNextTry() {
+		try {
+			TimeUnit.MINUTES.sleep(MINUTES_UNTIL_RETRY);
+		} catch (InterruptedException e) {
+			LOGGER.error("Timer which silently waits for the next retry was interrupted", e);
 		}
-		LOGGER.error("An error occurred while connection to the MySQL database", exception);
 	}
 
 	/**

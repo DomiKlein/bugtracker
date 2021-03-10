@@ -1,4 +1,4 @@
-package com.bugtracker.testdatabase.results;
+package com.bugtracker.database.parser;
 
 import java.awt.*;
 import java.util.Date;

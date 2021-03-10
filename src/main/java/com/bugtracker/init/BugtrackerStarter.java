@@ -1,7 +1,5 @@
 package com.bugtracker.init;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
@@ -9,46 +7,49 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 
-import com.bugtracker.database.DatabaseConnection;
-
-// TODO : Add comment
+/**
+ * The main class used to establish the database connection and start all
+ * necessary servers, the webserver and REST server respectively.
+ */
 public class BugtrackerStarter {
-
-	/** The used logger. */
-	private static final Logger LOGGER = LogManager.getLogger(BugtrackerStarter.class);
 
 	/** The name of the package which contains all service classes. */
 	private static final String SERVICES_PACKAGE_NAME = "com.bugtracker.services";
 
 	public static void main(String[] args) {
-		// Configure database connection
+		// Establish database connection
 		DatabaseConnection databaseConnection = new DatabaseConnection();
-		// TODO : Uncomment
-		// databaseConnection.run();
+		Thread databaseConnectionThread = new Thread(databaseConnection);
+		databaseConnectionThread.start();
 
-		startServer();
+		// Start jetty server
+		Server jettyServer = prepareJettyServer();
+		JettyRunner jettyRunner = new JettyRunner(jettyServer);
+		Thread jettyServerThread = new Thread(jettyRunner);
+		jettyServerThread.start();
+
+		BugtrackerInstance.setInstance(new BugtrackerInstance(databaseConnectionThread, jettyServerThread));
 	}
 
-	// TODO : Add comment
-	private static void startServer() {
+	/**
+	 * Starts the webserver and REST server.
+	 */
+	private static Server prepareJettyServer() {
 		ServletContextHandler servletContext = prepareServletContext();
-		WebAppContext webAppContext;
+		WebAppContext webAppContext = prepareWebAppContext();
 
 		HandlerCollection handlerCollection = new HandlerCollection();
-		handlerCollection.setHandlers(new Handler[]{servletContext});
+		handlerCollection.setHandlers(new Handler[]{servletContext, webAppContext});
 
 		Server jettyServer = new Server(8080);
 		jettyServer.setHandler(handlerCollection);
-		try {
-			jettyServer.start();
-			jettyServer.join();
-		} catch (Exception e) {
-			LOGGER.error("Error while trying to run the webserver");
-			jettyServer.destroy();
-		}
+
+		return jettyServer;
 	}
 
-	// TODO : Add comment
+	/**
+	 * Creates a {@link ServletContextHandler} which is used for the REST server.
+	 */
 	private static ServletContextHandler prepareServletContext() {
 		ServletContextHandler servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
 		servletContext.setContextPath("/api");
@@ -61,9 +62,14 @@ public class BugtrackerStarter {
 		return servletContext;
 	}
 
-	// TODO : Add comment
+	/**
+	 * Creates a {@link WebAppContext} which is used for the webserver.
+	 */
 	private static WebAppContext prepareWebAppContext() {
-		// TODO : Implement and use in startWebserver()
-		return null;
+		WebAppContext webapp = new WebAppContext();
+		webapp.setResourceBase("src/main/webapp");
+		webapp.setContextPath("/");
+
+		return webapp;
 	}
 }
