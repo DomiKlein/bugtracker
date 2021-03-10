@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-public class DatabaseConnection implements Runnable {
+public class DatabaseConnection extends Thread {
 
 	/** The URL of the database. */
 	private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/bugtracker";

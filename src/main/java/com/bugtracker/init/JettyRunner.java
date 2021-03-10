@@ -4,12 +4,12 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 
-public class JettyRunner implements Runnable {
+public class JettyRunner extends Thread {
 
 	/** The used logger. */
 	private static final Logger LOGGER = LogManager.getLogger(JettyRunner.class);
 
-	private Server jettyServer;
+	private final Server jettyServer;
 
 	protected JettyRunner(Server jettyServer) {
 		this.jettyServer = jettyServer;

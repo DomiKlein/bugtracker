@@ -19,16 +19,14 @@ public class BugtrackerStarter {
 	public static void main(String[] args) {
 		// Establish database connection
 		DatabaseConnection databaseConnection = new DatabaseConnection();
-		Thread databaseConnectionThread = new Thread(databaseConnection);
-		databaseConnectionThread.start();
+		databaseConnection.start();
 
 		// Start jetty server
 		Server jettyServer = prepareJettyServer();
 		JettyRunner jettyRunner = new JettyRunner(jettyServer);
-		Thread jettyServerThread = new Thread(jettyRunner);
-		jettyServerThread.start();
+		jettyRunner.start();
 
-		BugtrackerInstance.setInstance(new BugtrackerInstance(databaseConnectionThread, jettyServerThread));
+		BugtrackerInstance.setInstance(new BugtrackerInstance(databaseConnection, jettyRunner));
 	}
 
 	/**
