@@ -8,7 +8,7 @@ import com.bugtracker.database.enums.ETables;
 /** The Java class which represents a entry in the Status table. */
 public class StatusParsedQueryResult implements IParsedQueryResult {
 
-	/** The unique ID of a status */
+	/** The unique ID of the status */
 	private final int statusId;
 
 	/** The name of the status */

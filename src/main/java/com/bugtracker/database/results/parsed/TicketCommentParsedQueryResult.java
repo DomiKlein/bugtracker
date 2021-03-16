@@ -8,7 +8,7 @@ import com.bugtracker.database.enums.ETables;
 /** The Java class which represents a entry in the TicketComments table. */
 public class TicketCommentParsedQueryResult implements IParsedQueryResult {
 
-	/** The unique ID of a comment */
+	/** The unique ID of the comment */
 	private final int commentId;
 
 	/** The unique ID of the user who created the comment */

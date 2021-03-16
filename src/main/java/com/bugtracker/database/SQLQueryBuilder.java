@@ -3,6 +3,7 @@ package com.bugtracker.database;
 import com.bugtracker.database.enums.ETables;
 import com.bugtracker.utils.StringUtils;
 
+/** Builder class to build SQL queries. */
 public class SQLQueryBuilder {
 
 	private String query;

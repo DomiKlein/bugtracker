@@ -7,10 +7,10 @@ import com.bugtracker.database.enums.ETables;
 /** The Java class which represents a entry in the Workflow table. */
 public class WorkflowParsedQueryResult implements IParsedQueryResult {
 
-	/** The unique ID of a status */
+	/** The unique ID of the status */
 	private final int statusId;
 
-	/** The unique ID of a next possible status */
+	/** The unique ID of the next possible status */
 	private final int nextStatusId;
 
 	public WorkflowParsedQueryResult(int statusId, int nextStatusId) {

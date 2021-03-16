@@ -7,10 +7,10 @@ import com.bugtracker.database.enums.ETables;
 /** The Java class which represents a entry in the TicketToLabels table. */
 public class TicketToLabelParsedQueryResult implements IParsedQueryResult {
 
-	/** The unique ID of a ticket */
+	/** The unique ID of the ticket */
 	private final int ticketId;
 
-	/** The unique ID of a label which is assigned to the ticket */
+	/** The unique ID of the label which is assigned to the ticket */
 	private final int labelId;
 
 	public TicketToLabelParsedQueryResult(int ticketId, int labelId) {

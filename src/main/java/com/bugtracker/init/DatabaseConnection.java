@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+/** Represents the database connection. */
 public class DatabaseConnection extends Thread {
 
 	/** The URL of the database. */

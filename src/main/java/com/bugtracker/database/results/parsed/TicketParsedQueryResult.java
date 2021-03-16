@@ -8,7 +8,7 @@ import com.bugtracker.database.enums.ETables;
 /** The Java class which represents a entry in the Tickets table. */
 public class TicketParsedQueryResult implements IParsedQueryResult {
 
-	/** The unique ID of a ticket */
+	/** The unique ID of the ticket */
 	private final int ticketId;
 
 	/** The unique ID of the user who created the ticket */

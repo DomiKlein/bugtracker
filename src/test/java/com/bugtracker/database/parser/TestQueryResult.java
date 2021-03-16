@@ -7,13 +7,28 @@ import org.assertj.core.util.Preconditions;
 
 import com.bugtracker.database.results.IQueryResult;
 
-/** Represents the results of a query on a imaginary database. */
+/**
+ * Represents the results of a query on a imaginary database.
+ * <p>
+ * For the i-th row:
+ * <ul>
+ * <li>{@link #getInt(int)} returns: "{i}"</li>
+ * <li>{@link #getString(int)} returns: "Test {i}"</li>
+ * <li>{@link #getTimestamp(int)} returns the date with {i} milliseconds after
+ * 1.1.1970</li>
+ * <li>{@link #getString(int)} returns the color which has the RGB code {i}</li>
+ * </ul>
+ */
 public class TestQueryResult implements IQueryResult {
 
-	/** The number of results which should be returned */
-	private int numberOfResults;
+	/**
+	 * The number of results which should be returned
+	 */
+	private final int numberOfResults;
 
-	/** Counts how many results have been parsed yet */
+	/**
+	 * Counts how many results have been parsed yet
+	 */
 	private int counter;
 
 	public TestQueryResult(int numberOfResults) {

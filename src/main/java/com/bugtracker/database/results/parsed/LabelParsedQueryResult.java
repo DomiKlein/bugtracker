@@ -7,7 +7,7 @@ import com.bugtracker.database.enums.ETables;
 /** The Java class which represents a entry in the Labels table. */
 public class LabelParsedQueryResult implements IParsedQueryResult {
 
-	/** The unique ID of a label */
+	/** The unique ID of the label */
 	private final int labelId;
 
 	/** The name of the label */
