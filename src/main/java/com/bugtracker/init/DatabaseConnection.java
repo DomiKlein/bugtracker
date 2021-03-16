@@ -25,8 +25,11 @@ public class DatabaseConnection extends Thread {
 	/** Interval to check if database connection is still alive. */
 	private static final int HEALTH_CHECK_INTERVAL_MINUTES = 1;
 
-	/** The seconds to wait for a retry if the connection cannot be established */
-	private static final int MINUTES_UNTIL_RETRY = 10;
+	/** The seconds to wait for a retry if the connection cannot be established. */
+	private static final int SECONDS_UNTIL_RETRY = 5;
+
+	/** Indicates whether the connection with the database is valid. */
+	private boolean isConnected = false;
 
 	/** Singleton database connection. */
 	public static Connection databaseConnection;
@@ -36,8 +39,9 @@ public class DatabaseConnection extends Thread {
 		establishConnection();
 		while (true) {
 			try {
-				if (databaseConnection.isClosed()) {
+				if (databaseConnection.isValid(30)) {
 					LOGGER.info("Database connection was closed");
+					isConnected = false;
 					break;
 				}
 				TimeUnit.MINUTES.sleep(HEALTH_CHECK_INTERVAL_MINUTES);
@@ -62,12 +66,10 @@ public class DatabaseConnection extends Thread {
 				if (connection != null) {
 					DatabaseConnection.databaseConnection = connection;
 					LOGGER.info("Successfully connected to the MySQL database 'bugtracker'");
+					isConnected = true;
 				}
 			} catch (SQLException e) {
-				LOGGER.error(
-						"Failed to connect to MySQL database. Please check your Docker container. Automatic retry in "
-								+ MINUTES_UNTIL_RETRY
-								+ " minutes. For an earlier retry, please trigger a manual retry.");
+				// Docker container is probably not running
 			} finally {
 				waitForNextTry();
 			}
@@ -75,11 +77,11 @@ public class DatabaseConnection extends Thread {
 	}
 
 	/**
-	 * Suspends the current thread for {@link #MINUTES_UNTIL_RETRY}.
+	 * Suspends the current thread for {@link #SECONDS_UNTIL_RETRY}.
 	 */
 	private static void waitForNextTry() {
 		try {
-			TimeUnit.MINUTES.sleep(MINUTES_UNTIL_RETRY);
+			TimeUnit.SECONDS.sleep(SECONDS_UNTIL_RETRY);
 		} catch (InterruptedException e) {
 			LOGGER.error("Timer which silently waits for the next retry was interrupted", e);
 		}
