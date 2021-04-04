@@ -4,14 +4,14 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-/** An example service. */
-@Path("/helloworld")
+@Path("/info")
 public class HelloWorldService {
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String sayHelloWorld() {
-		return "Hello World";
+	public Response sayHelloWorld() {
+		return Response.status(Response.Status.OK).entity("Hello World!").build();
 	}
 }
