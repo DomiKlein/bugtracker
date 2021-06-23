@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS Tickets (
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     creationTimestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (ticketId) -- ,
+    PRIMARY KEY (ticketId),
     FOREIGN KEY (creatorId) REFERENCES Users (userId),
     FOREIGN KEY (assigneeId) REFERENCES Users (userId),
     FOREIGN KEY (statusId) REFERENCES Status (statusId)
