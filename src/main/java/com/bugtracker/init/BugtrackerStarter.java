@@ -37,7 +37,7 @@ public class BugtrackerStarter {
 		WebAppContext webAppContext = prepareWebAppContext();
 
 		HandlerCollection handlerCollection = new HandlerCollection();
-		handlerCollection.setHandlers(new Handler[]{servletContext, webAppContext});
+		handlerCollection.setHandlers(new Handler[] { servletContext, webAppContext });
 
 		Server jettyServer = new Server(8080);
 		jettyServer.setHandler(handlerCollection);
@@ -65,8 +65,9 @@ public class BugtrackerStarter {
 	 */
 	private static WebAppContext prepareWebAppContext() {
 		WebAppContext webapp = new WebAppContext();
-		webapp.setResourceBase("src/main/webapp");
 		webapp.setContextPath("/");
+		webapp.setResourceBase("src/ui/out");
+		webapp.setWelcomeFiles(new String[] { "index.html" });
 
 		return webapp;
 	}

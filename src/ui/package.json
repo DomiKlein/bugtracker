@@ -11,7 +11,8 @@
     "clean": "rm -rf ./out && rm -f ./styles/*.css",
     "compileLess": "lessc ./styles/root.less ./styles/root.css",
     "compileTypeScript": "tsc -p .",
-    "build": "npm run clean && npm run compileLess && npm run compileTypeScript"
+    "addEssentials": "cp ./code/index.html ./out/index.html && cp ./code/favicon.ico ./out/favicon.ico",
+    "build": "npm run clean && npm run compileLess && npm run compileTypeScript && npm run addEssentials"
   },
   "keywords": [],
   "author": "",

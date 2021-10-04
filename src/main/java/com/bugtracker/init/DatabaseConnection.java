@@ -40,7 +40,7 @@ public class DatabaseConnection extends Thread {
 		establishConnection();
 		while (true) {
 			try {
-				if (databaseConnection.isValid(30)) {
+				if (!databaseConnection.isValid(30)) {
 					LOGGER.info("Database connection was closed");
 					isConnected = false;
 					break;
