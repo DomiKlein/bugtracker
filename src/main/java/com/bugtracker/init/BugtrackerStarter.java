@@ -66,8 +66,8 @@ public class BugtrackerStarter {
 	private static WebAppContext prepareWebAppContext() {
 		WebAppContext webapp = new WebAppContext();
 		webapp.setContextPath("/");
-		webapp.setResourceBase("src/ui/out");
-		webapp.setWelcomeFiles(new String[] { "index.html" });
+		webapp.setResourceBase("src/ui");
+		webapp.setWelcomeFiles(new String[] { "out/index.html" });
 
 		return webapp;
 	}

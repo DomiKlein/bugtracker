@@ -1,8 +1,5 @@
 # Ignore node modules
 node_modules
 
-# Ignore output folder
-out
-
-# Ignore compiled less files
-styles/*.css
+# Ignore dist (aka output) folder
+dist
