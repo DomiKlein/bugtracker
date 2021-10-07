@@ -1,4 +1,4 @@
-package com.bugtracker.mysql.results;
+package com.bugtracker.database.results;
 
 import java.awt.*;
 import java.sql.ResultSet;
@@ -7,8 +7,6 @@ import java.util.Date;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-
-import com.bugtracker.database.results.IQueryResult;
 
 /**
  * Represents the results of a query on a imaginary database.
