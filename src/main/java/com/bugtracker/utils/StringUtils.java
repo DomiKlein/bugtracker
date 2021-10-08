@@ -16,12 +16,18 @@ public class StringUtils {
 	 * Concats all given {@code strings} together with the given {@code separator}.
 	 */
 	public static String concat(String separator, String... strings) {
-		if (strings.length == 0) {
+		return concat(separator, Arrays.asList(strings));
+	}
+
+	/**
+	 * Concats all given {@code strings} together with the given {@code separator}.
+	 */
+	public static String concat(String separator, List<String> strings) {
+		if (strings.isEmpty()) {
 			return EMPTY_STRING;
 		}
 
-		List<String> stringToConcat = Arrays.asList(strings);
-		StringBuilder result = new StringBuilder(stringToConcat.remove(0));
+		StringBuilder result = new StringBuilder(strings.remove(0));
 
 		for (String string : strings) {
 			result.append(separator).append(string);

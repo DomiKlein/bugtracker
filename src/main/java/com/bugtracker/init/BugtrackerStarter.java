@@ -7,6 +7,8 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 
+import com.bugtracker.database.connection.MySQLDatabaseConnection;
+
 /**
  * The main class used to establish the database connection and start all
  * necessary servers, the webserver and REST server respectively.
@@ -18,7 +20,7 @@ public class BugtrackerStarter {
 
 	public static void main(String[] args) {
 		// Establish database connection
-		DatabaseConnection databaseConnection = new DatabaseConnection();
+		MySQLDatabaseConnection databaseConnection = new MySQLDatabaseConnection();
 		databaseConnection.start();
 
 		// Start jetty server
@@ -66,8 +68,8 @@ public class BugtrackerStarter {
 	private static WebAppContext prepareWebAppContext() {
 		WebAppContext webapp = new WebAppContext();
 		webapp.setContextPath("/");
-		webapp.setResourceBase("src/ui");
-		webapp.setWelcomeFiles(new String[] { "out/index.html" });
+		webapp.setResourceBase("src/ui/dist");
+		webapp.setWelcomeFiles(new String[] { "index.html" });
 
 		return webapp;
 	}

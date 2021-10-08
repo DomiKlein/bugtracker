@@ -1,4 +1,4 @@
-package com.bugtracker.init;
+package com.bugtracker.database.connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,11 +8,16 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-/** Represents the database connection. */
-public class DatabaseConnection extends Thread {
+import com.bugtracker.database.query.SQLQuery;
 
-	/** The URL of the database. */
-	private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/bugtracker";
+/** Represents the database connection. */
+public class MySQLDatabaseConnection extends DatabaseConnection {
+
+	/** The URL of the database */
+	private final String databaseUrl;
+
+	/** The standard URL of the database used by Docker. */
+	private static final String STANDARD_DOCKER_DATABASE_URL = "jdbc:mysql://localhost:3306/bugtracker";
 
 	/** The username used for the login. */
 	private static final String DATABASE_USER = "root";
@@ -21,7 +26,7 @@ public class DatabaseConnection extends Thread {
 	private static final String DATABASE_USER_PASSWORD = "domiklein";
 
 	/** The used logger. */
-	private static final Logger LOGGER = LogManager.getLogger(DatabaseConnection.class);
+	private static final Logger LOGGER = LogManager.getLogger(MySQLDatabaseConnection.class);
 
 	/** Interval to check if database connection is still alive. */
 	private static final int HEALTH_CHECK_INTERVAL_MINUTES = 1;
@@ -29,48 +34,55 @@ public class DatabaseConnection extends Thread {
 	/** The seconds to wait for a retry if the connection cannot be established. */
 	private static final int SECONDS_UNTIL_RETRY = 5;
 
-	/** Indicates whether the connection with the database is valid. */
-	private boolean isConnected = false;
-
 	/** Singleton database connection. */
 	public static Connection databaseConnection;
 
+	/** Use database at standard docker location. */
+	public MySQLDatabaseConnection() {
+		this(STANDARD_DOCKER_DATABASE_URL);
+	}
+
+	/** Use different */
+	public MySQLDatabaseConnection(String databaseUrl) {
+		this.databaseUrl = databaseUrl;
+	}
+
 	@Override
-	public void run() {
+	protected void preRun() {
 		establishConnection();
-		while (true) {
-			try {
-				if (!databaseConnection.isValid(30)) {
-					LOGGER.info("Database connection was closed");
-					isConnected = false;
-					break;
-				}
-				TimeUnit.MINUTES.sleep(HEALTH_CHECK_INTERVAL_MINUTES);
-			} catch (SQLException e) {
-				LOGGER.error("A problem occurred with the database connection", e);
-				break;
-			} catch (InterruptedException e) {
-				LOGGER.warn("Database connection health check was interrupted", e);
+	}
+
+	@Override
+	protected boolean doRun() {
+		try {
+			if (!databaseConnection.isValid(30)) {
+				LOGGER.info("Database connection was closed");
+				return false;
 			}
+			TimeUnit.MINUTES.sleep(HEALTH_CHECK_INTERVAL_MINUTES);
+		} catch (SQLException e) {
+			LOGGER.error("A problem occurred with the database connection", e);
+			return false;
+		} catch (InterruptedException e) {
+			LOGGER.warn("Database connection health check was interrupted", e);
+			return false;
 		}
-		closeConnection();
+		return true;
 	}
 
 	/**
 	 * Establishes a database connection.
 	 */
 	private void establishConnection() {
-		while (DatabaseConnection.databaseConnection == null) {
+		while (MySQLDatabaseConnection.databaseConnection == null) {
 			try {
-				Connection connection = DriverManager.getConnection(DATABASE_URL, DATABASE_USER,
-						DATABASE_USER_PASSWORD);
+				Connection connection = DriverManager.getConnection(databaseUrl, DATABASE_USER, DATABASE_USER_PASSWORD);
 				if (connection != null) {
-					DatabaseConnection.databaseConnection = connection;
+					MySQLDatabaseConnection.databaseConnection = connection;
 					LOGGER.info("Successfully connected to the MySQL database 'bugtracker'");
-					isConnected = true;
 				}
 			} catch (SQLException e) {
-				// Docker container is probably not running
+				// Docker container is probably not running (retry)
 			} finally {
 				waitForNextTry();
 			}
@@ -88,10 +100,20 @@ public class DatabaseConnection extends Thread {
 		}
 	}
 
+	@Override
+	protected void afterRun() {
+		closeConnection();
+	}
+
+	@Override
+	public void query(SQLQuery query) {
+		// TODO
+	}
+
 	/**
 	 * Tries to close the {@link #databaseConnection}.
 	 */
-	private static void closeConnection() {
+	private void closeConnection() {
 		try {
 			databaseConnection.close();
 		} catch (SQLException e) {
