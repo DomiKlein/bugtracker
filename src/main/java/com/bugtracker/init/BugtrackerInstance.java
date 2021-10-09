@@ -1,6 +1,6 @@
 package com.bugtracker.init;
 
-import com.bugtracker.database.connection.DatabaseConnection;
+import com.bugtracker.database.core.MySQLDatabaseConnection;
 
 /**
  * Represents a Bugtracker instance.
@@ -11,12 +11,12 @@ public class BugtrackerInstance {
 	private static BugtrackerInstance INSTANCE = null;
 
 	/** The thread which establishes the database connections. */
-	private final DatabaseConnection databaseConnectionThread;
+	private final MySQLDatabaseConnection databaseConnectionThread;
 
 	/** The thread which runs the Jetty server. */
 	private final Thread jettyServerThread;
 
-	protected BugtrackerInstance(DatabaseConnection databaseConnectionThread, Thread jettyServerThread) {
+	protected BugtrackerInstance(MySQLDatabaseConnection databaseConnectionThread, Thread jettyServerThread) {
 		this.databaseConnectionThread = databaseConnectionThread;
 		this.jettyServerThread = jettyServerThread;
 	}

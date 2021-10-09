@@ -7,7 +7,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 
-import com.bugtracker.database.connection.MySQLDatabaseConnection;
+import com.bugtracker.database.core.MySQLDatabaseConnection;
 
 /**
  * The main class used to establish the database connection and start all
