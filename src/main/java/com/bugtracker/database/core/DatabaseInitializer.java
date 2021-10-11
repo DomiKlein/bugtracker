@@ -1,5 +1,9 @@
 package com.bugtracker.database.core;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.TimeZone;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -18,6 +22,11 @@ public class DatabaseInitializer {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().configure()
 				.applySettings(configuration.getProperties());
 
-		return configuration.buildSessionFactory(builder.build());
+		SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
+		// TODO : Check if this setup is working as expected
+		ZoneId currentTimezone = ZonedDateTime.now(ZoneId.systemDefault()).getZone();
+		sessionFactory.withOptions().jdbcTimeZone(TimeZone.getTimeZone(currentTimezone));
+
+		return sessionFactory;
 	}
 }

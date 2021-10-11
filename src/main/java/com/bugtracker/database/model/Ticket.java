@@ -1,6 +1,10 @@
 package com.bugtracker.database.model;
 
+import java.util.Date;
+
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 /** Class which represents a ticket */
 @Entity
@@ -20,7 +24,7 @@ public class Ticket {
 	/** Column name of description. */
 	public static final String DESCRIPTION_COLUMN_NAME = "description";
 	/** Column name of the creation date. */
-	public static final String CREATION_DATE_COLUMN_NAME = "creationDate";
+	public static final String CREATION_DATE_COLUMN_NAME = "creationTimestamp";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +32,11 @@ public class Ticket {
 	private int ticketId;
 
 	@ManyToOne
-	@JoinColumn(name = CREATOR_COLUMN_NAME, referencedColumnName = User.USER_ID_COLUMN_NAME, nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = CREATOR_COLUMN_NAME, referencedColumnName = User.USER_ID_COLUMN_NAME, nullable = false)
 	private User creator;
 
 	@ManyToOne
-	@JoinColumn(name = ASSIGNEE_COLUMN_NAME, referencedColumnName = User.USER_ID_COLUMN_NAME, insertable = false, updatable = false)
+	@JoinColumn(name = ASSIGNEE_COLUMN_NAME, referencedColumnName = User.USER_ID_COLUMN_NAME)
 	private User assignee;
 
 	@Column(name = TITLE_COLUMN_NAME, nullable = false)
@@ -41,7 +45,9 @@ public class Ticket {
 	@Column(name = DESCRIPTION_COLUMN_NAME, nullable = false)
 	private String description;
 
-	// TODO : Add Creation date
+	@CreationTimestamp
+	@Column(name = CREATION_DATE_COLUMN_NAME, nullable = false)
+	private Date creationTimestamp;
 
 	/**
 	 * @see #creator
@@ -104,5 +110,12 @@ public class Ticket {
 	 */
 	public String getDescription() {
 		return description;
+	}
+
+	/**
+	 * @see #creationTimestamp
+	 */
+	public Date getCreationTimestamp() {
+		return creationTimestamp;
 	}
 }

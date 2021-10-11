@@ -3,7 +3,6 @@
 <hibernate-configuration>
     <session-factory>
         <!-- Basic configuration -->
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
 
         <!-- Database configuration -->
@@ -16,8 +15,8 @@
         <property name="hibernate.format_sql">true</property>
 
         <!-- Mappings -->
-        <mapping class="com.bugtracker.database.model.User"/>
-        <mapping class="com.bugtracker.database.model.Ticket"/>
+        <mapping class="com.bugtracker.database.model.User" />
+        <mapping class="com.bugtracker.database.model.Ticket" />
 
     </session-factory>
 </hibernate-configuration>

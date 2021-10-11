@@ -18,10 +18,10 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = USER_ID_COLUMN_NAME, nullable = false)
+	@Column(name = USER_ID_COLUMN_NAME, unique = true, nullable = false)
 	private int userId;
 
-	@Column(name = USERNAME_COLUMN_NAME, nullable = false)
+	@Column(name = USERNAME_COLUMN_NAME, unique = true, nullable = false)
 	private String username;
 
 	@Column(name = FIRST_NAME_COLUMN_NAME, nullable = false)

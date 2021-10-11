@@ -70,18 +70,8 @@ public class MySQLDatabaseConnection extends Thread {
 	}
 
 	/** Save the given object in the database. */
-	public void saveData(Object o) {
-		Transaction transaction = null;
-		try (Session session = sessionFactory.openSession()) {
-			transaction = session.beginTransaction();
-			session.save(o);
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
-			e.printStackTrace();
-		}
+	public Object saveData(Object o) {
+		return executeQuery((session -> session.save(o)));
 	}
 
 	/** Finds the object with the given id. */
