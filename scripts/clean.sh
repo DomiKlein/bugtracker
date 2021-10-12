@@ -8,4 +8,4 @@ docker-compose down
 # Remove old database files
 echo
 echo ">> Deleting database files"
-rm -rf database/data
+sudo rm -rf database/data
