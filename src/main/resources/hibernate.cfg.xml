@@ -12,11 +12,12 @@
 
         <!-- Output settings -->
         <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.format_sql">false</property>
 
         <!-- Mappings -->
-        <mapping class="com.bugtracker.database.model.User" />
-        <mapping class="com.bugtracker.database.model.Ticket" />
+        <mapping class="com.bugtracker.database.model.User"/>
+        <mapping class="com.bugtracker.database.model.Ticket"/>
+        <mapping class="com.bugtracker.database.model.TicketComment"/>
 
     </session-factory>
 </hibernate-configuration>

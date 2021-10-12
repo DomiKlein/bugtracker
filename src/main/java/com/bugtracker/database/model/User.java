@@ -2,9 +2,11 @@ package com.bugtracker.database.model;
 
 import javax.persistence.*;
 
+import com.bugtracker.database.model.constants.Tables;
+
 /** Class which represents a user. */
 @Entity
-@Table(name = "users")
+@Table(name = Tables.USERS)
 public class User {
 
 	/** Column name of the user id. */

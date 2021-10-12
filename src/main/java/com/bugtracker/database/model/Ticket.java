@@ -6,9 +6,11 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.bugtracker.database.model.constants.Tables;
+
 /** Class which represents a ticket */
 @Entity
-@Table(name = "tickets")
+@Table(name = Tables.TICKETS)
 public class Ticket {
 
 	/** Column name of the ticket id. */
@@ -23,8 +25,8 @@ public class Ticket {
 	public static final String TITLE_COLUMN_NAME = "title";
 	/** Column name of description. */
 	public static final String DESCRIPTION_COLUMN_NAME = "description";
-	/** Column name of the creation date. */
-	public static final String CREATION_DATE_COLUMN_NAME = "creationTimestamp";
+	/** Column name of the creation timestamp. */
+	public static final String CREATION_TIMESTAMP_COLUMN_NAME = "creationTimestamp";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +48,7 @@ public class Ticket {
 	private String description;
 
 	@CreationTimestamp
-	@Column(name = CREATION_DATE_COLUMN_NAME, nullable = false)
+	@Column(name = CREATION_TIMESTAMP_COLUMN_NAME, nullable = false)
 	private Date creationTimestamp;
 
 	/**
