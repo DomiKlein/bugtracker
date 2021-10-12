@@ -7,7 +7,7 @@ import com.bugtracker.database.model.constants.Tables;
 /** Class which represents a user. */
 @Entity
 @Table(name = Tables.USERS)
-public class User {
+public class User extends DatabaseEntity {
 
 	/** Column name of the user id. */
 	public static final String USER_ID_COLUMN_NAME = "userId";
@@ -21,7 +21,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = USER_ID_COLUMN_NAME, unique = true, nullable = false)
-	private int userId;
+	private Integer userId;
 
 	@Column(name = USERNAME_COLUMN_NAME, unique = true, nullable = false)
 	private String username;
@@ -56,7 +56,7 @@ public class User {
 	/**
 	 * @see #userId
 	 */
-	public int getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
@@ -79,5 +79,10 @@ public class User {
 	 */
 	public String getLastName() {
 		return lastName;
+	}
+
+	@Override
+	public Object getId() {
+		return getUserId();
 	}
 }

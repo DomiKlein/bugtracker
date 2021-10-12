@@ -15,7 +15,7 @@ import com.bugtracker.database.model.constants.Tables;
 @Entity
 @Table(name = Tables.TICKET_COMMENTS)
 @IdClass(TicketComment.TicketCommentKey.class)
-public class TicketComment {
+public class TicketComment extends DatabaseEntity {
 
 	/** Column name of the ticket id. */
 	public static final String TICKET_COMMENT_ID_COLUMN_NAME = "commentId";
@@ -32,7 +32,7 @@ public class TicketComment {
 	@GenericGenerator(name = "depending_incrementer", strategy = "com.bugtracker.database.model.generators.TicketCommentIdGenerator")
 	@GeneratedValue(generator = "depending_incrementer")
 	@Column(name = TICKET_COMMENT_ID_COLUMN_NAME, nullable = false)
-	private int commentId;
+	private Integer commentId;
 
 	@ManyToOne
 	@JoinColumn(name = CREATOR_COLUMN_NAME, referencedColumnName = User.USER_ID_COLUMN_NAME, nullable = false)
@@ -74,7 +74,7 @@ public class TicketComment {
 	/**
 	 * @see #commentId
 	 */
-	public int getCommentId() {
+	public Integer getCommentId() {
 		return commentId;
 	}
 
@@ -106,15 +106,20 @@ public class TicketComment {
 		return creationTimestamp;
 	}
 
+	@Override
+	public Object getId() {
+		return getCommentId();
+	}
+
 	/** Represents the key of the table. */
 	public static class TicketCommentKey implements Serializable {
-		protected int commentId;
+		protected Integer commentId;
 		protected Ticket ticket;
 
 		public TicketCommentKey() {
 		}
 
-		public TicketCommentKey(int commentId, Ticket ticket) {
+		public TicketCommentKey(Integer commentId, Ticket ticket) {
 			this.commentId = commentId;
 			this.ticket = ticket;
 		}
@@ -128,12 +133,18 @@ public class TicketComment {
 				return false;
 			}
 			TicketCommentKey that = (TicketCommentKey) o;
-			return commentId == that.commentId && ticket.equals(that.ticket);
+			return commentId.equals(that.commentId) && ticket.equals(that.ticket);
 		}
 
 		@Override
 		public int hashCode() {
 			return Objects.hash(commentId, ticket);
 		}
+
+	}
+
+	@Override
+	public boolean forceMerge() {
+		return true;
 	}
 }

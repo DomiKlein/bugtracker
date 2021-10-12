@@ -11,7 +11,7 @@ import com.bugtracker.database.model.constants.Tables;
 /** Class which represents a ticket */
 @Entity
 @Table(name = Tables.TICKETS)
-public class Ticket {
+public class Ticket extends DatabaseEntity {
 
 	/** Column name of the ticket id. */
 	public static final String TICKET_ID_COLUMN_NAME = "ticketId";
@@ -31,7 +31,7 @@ public class Ticket {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = TICKET_ID_COLUMN_NAME, nullable = false)
-	private int ticketId;
+	private Integer ticketId;
 
 	@ManyToOne
 	@JoinColumn(name = CREATOR_COLUMN_NAME, referencedColumnName = User.USER_ID_COLUMN_NAME, nullable = false)
@@ -82,7 +82,7 @@ public class Ticket {
 	/**
 	 * @see #ticketId
 	 */
-	public int getTicketId() {
+	public Integer getTicketId() {
 		return ticketId;
 	}
 
@@ -119,5 +119,10 @@ public class Ticket {
 	 */
 	public Date getCreationTimestamp() {
 		return creationTimestamp;
+	}
+
+	@Override
+	public Object getId() {
+		return getTicketId();
 	}
 }

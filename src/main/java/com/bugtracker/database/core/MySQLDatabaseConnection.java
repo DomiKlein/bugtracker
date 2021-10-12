@@ -4,13 +4,14 @@ import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
+
+import com.bugtracker.database.model.DatabaseEntity;
 
 /** Represents the database connection. */
 public class MySQLDatabaseConnection extends Thread {
@@ -31,7 +32,7 @@ public class MySQLDatabaseConnection extends Thread {
 	private volatile boolean running = true;
 
 	/** Session factory to send queries to the database */
-	protected SessionFactory sessionFactory;
+	protected EntityManagerFactory entityManagerFactory;
 
 	/** Use database at standard docker location. */
 	public MySQLDatabaseConnection() {
@@ -46,11 +47,11 @@ public class MySQLDatabaseConnection extends Thread {
 
 	@Override
 	public void run() {
-		sessionFactory = DatabaseInitializer.initDatabase(databaseUrl);
+		entityManagerFactory = DatabaseInitializer.initDatabase(databaseUrl);
 
 		while (running) {
 			try {
-				if (sessionFactory.isClosed()) {
+				if (!entityManagerFactory.isOpen()) {
 					LOGGER.info("Database connection was closed");
 					break;
 				}
@@ -66,55 +67,51 @@ public class MySQLDatabaseConnection extends Thread {
 	/** Terminates the thread and closes the connection to the database */
 	public void terminate() {
 		running = false;
-		sessionFactory.close();
+		entityManagerFactory.close();
 	}
 
 	/** Save the given object in the database. */
-	public Object saveData(Object o) {
-		return executeQuery((session -> session.save(o)));
-	}
-
-	/** Finds the object with the given id. */
-	public Object readData(Class clazz, Serializable id) {
-		return executeQuery((session -> session.get(clazz, id)));
-	}
-
-	/** Finds the object where the given property equals the given {@code value}. */
-	public Object readDataWithConstraints(Class clazz, String propertyName, Object value) {
-		return executeQuery((session -> {
-			Criteria criteria = session.createCriteria(clazz);
-			return criteria.add(Restrictions.eq(propertyName, value)).uniqueResult();
+	public <T extends DatabaseEntity> void saveData(T object) {
+		executeQuery((em -> {
+			if (object.isDetached() || object.forceMerge()) {
+				em.merge(object);
+			} else {
+				em.persist(object);
+			}
+			return object;
 		}));
 	}
 
+	/** Finds the object with the given id. */
+	public <T extends DatabaseEntity> T readData(Class<T> clazz, Serializable id) {
+		return executeQuery((em -> em.find(clazz, id)));
+	}
+
 	/** Updates the given object in the database. */
-	public Object updateData(Object o) {
-		return executeQuery((session) -> {
-			session.update(o);
-			return o;
-		});
+	public <T extends DatabaseEntity> void updateData(T object) {
+		executeQuery((em) -> em.merge(object));
 	}
 
 	/** Executes the given procedure on the database. */
-	private Object executeQuery(Function<Session, Object> query) {
-		Session session = sessionFactory.openSession();
-		Transaction transaction = null;
-		Object result = null;
+	private <T> T executeQuery(Function<EntityManager, T> query) {
+		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityTransaction transaction = null;
 
 		try {
-			transaction = session.beginTransaction();
-			result = query.apply(session);
+			transaction = em.getTransaction();
+			transaction.begin();
+			T result = query.apply(em);
 			transaction.commit();
-		}
-
-		catch (Exception e) {
+			return result;
+		} catch (Exception e) {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			e.printStackTrace();
+			LOGGER.error("Failed to execute query", e);
 		} finally {
-			session.close();
+			em.close();
 		}
-		return result;
+
+		return null;
 	}
 }
