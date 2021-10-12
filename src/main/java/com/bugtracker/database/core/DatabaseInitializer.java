@@ -10,7 +10,6 @@ import org.hibernate.cfg.Configuration;
 
 /** Class to initialize a database connection. */
 public class DatabaseInitializer {
-
 	/**
 	 * Initializes a connection to the database, which is reachable at the given
 	 * {@code databaseUrl} and returns the according {@link SessionFactory}.
@@ -18,15 +17,17 @@ public class DatabaseInitializer {
 	public static SessionFactory initDatabase(String databaseUrl) {
 		Configuration configuration = new Configuration();
 		configuration.setProperty("hibernate.connection.url", databaseUrl);
+		configuration.setProperty("hibernate.jdbc.time_zone", getSystemTimeZone());
 
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().configure()
 				.applySettings(configuration.getProperties());
 
-		SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
-		// TODO : Check if this setup is working as expected
-		ZoneId currentTimezone = ZonedDateTime.now(ZoneId.systemDefault()).getZone();
-		sessionFactory.withOptions().jdbcTimeZone(TimeZone.getTimeZone(currentTimezone));
+		return configuration.buildSessionFactory(builder.build());
+	}
 
-		return sessionFactory;
+	/** Returns the systems time zone. */
+	private static String getSystemTimeZone() {
+		ZoneId currentTimezone = ZonedDateTime.now(ZoneId.systemDefault()).getZone();
+		return TimeZone.getTimeZone(currentTimezone).getID();
 	}
 }

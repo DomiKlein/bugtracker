@@ -42,7 +42,7 @@ public class Ticket {
 	@Column(name = TITLE_COLUMN_NAME, nullable = false)
 	private String title;
 
-	@Column(name = DESCRIPTION_COLUMN_NAME, nullable = false)
+	@Column(name = DESCRIPTION_COLUMN_NAME, nullable = false, columnDefinition = "mediumtext")
 	private String description;
 
 	@CreationTimestamp
