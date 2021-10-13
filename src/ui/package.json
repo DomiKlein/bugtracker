@@ -8,6 +8,7 @@
   },
   "main": "index.js",
   "scripts": {
+    "clean": "rm -rf dist",
     "build": "webpack --config webpack.config.js"
   },
   "keywords": [],
@@ -26,8 +27,10 @@
     "webpack-cli": "^4.9.0"
   },
   "dependencies": {
+    "build": "^0.1.4",
     "fomantic-ui": "^2.8.8",
     "gulp": "^4.0.2",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "run": "^1.4.0"
   }
 }
