@@ -9,3 +9,6 @@ docker-compose down
 echo
 echo ">> Deleting database files"
 sudo rm -rf database/data
+
+# Remove build files and logs
+mvn clean
