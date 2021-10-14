@@ -8,13 +8,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.bugtracker.database.model.DatabaseEntity;
+import com.bugtracker.utils.ExtendedThread;
 
 /** Represents the database connection. */
-public class MySQLDatabaseConnection extends Thread {
+public class MySQLDatabaseConnection extends ExtendedThread {
 
 	/** The URL of the database */
 	private final String databaseUrl;
@@ -23,13 +23,10 @@ public class MySQLDatabaseConnection extends Thread {
 	private static final String STANDARD_DOCKER_DATABASE_URL = "jdbc:mysql://localhost:3306/bugtracker";
 
 	/** The used logger. */
-	private static final Logger LOGGER = LogManager.getLogger(MySQLDatabaseConnection.class);
+	private static final Logger LOGGER = Logger.getLogger(MySQLDatabaseConnection.class);
 
 	/** Interval to check if database connection is still alive. */
 	private static final int HEALTH_CHECK_INTERVAL_MINUTES = 1;
-
-	/** Value to check whether the thread is still running. */
-	private volatile boolean running = true;
 
 	/** Session factory to send queries to the database */
 	protected EntityManagerFactory entityManagerFactory;
@@ -46,28 +43,48 @@ public class MySQLDatabaseConnection extends Thread {
 	}
 
 	@Override
-	public void run() {
-		entityManagerFactory = DatabaseInitializer.initDatabase(databaseUrl);
-
-		while (running) {
-			try {
-				if (!entityManagerFactory.isOpen()) {
-					LOGGER.info("Database connection was closed");
-					break;
-				}
-				TimeUnit.MINUTES.sleep(HEALTH_CHECK_INTERVAL_MINUTES);
-			} catch (InterruptedException e) {
-				LOGGER.warn("Database connection health check was interrupted", e);
-				break;
-			}
+	protected void setup() {
+		try {
+			entityManagerFactory = DatabaseInitializer.initDatabase(databaseUrl);
+		} catch (Exception e) {
+			LOGGER.fatal("Could not establish connection to database", e);
+			terminate();
 		}
-		terminate();
+	}
+
+	@Override
+	protected void execute() {
+		try {
+			if (!this.isConnected()) {
+				LOGGER.fatal("Databased connection was closed");
+				terminate();
+			}
+			TimeUnit.MINUTES.sleep(HEALTH_CHECK_INTERVAL_MINUTES);
+		} catch (InterruptedException e) {
+			LOGGER.warn("Database connection health check was interrupted", e);
+		}
+	}
+
+	private boolean isConnected() {
+		return Boolean.TRUE.equals(this.executeQuery(entityManager -> {
+			try {
+				Object res = entityManager.createNativeQuery("select 1").getSingleResult();
+				if (res != null) {
+					return Boolean.TRUE;
+				}
+			} catch (Exception e) {
+				// Connection lost
+			}
+			return Boolean.FALSE;
+		}, false));
 	}
 
 	/** Terminates the thread and closes the connection to the database */
-	public void terminate() {
-		running = false;
-		entityManagerFactory.close();
+	@Override
+	protected void cleanUp() {
+		if (entityManagerFactory != null) {
+			entityManagerFactory.close();
+		}
 	}
 
 	/** Save the given object in the database. */
@@ -94,6 +111,11 @@ public class MySQLDatabaseConnection extends Thread {
 
 	/** Executes the given procedure on the database. */
 	private <T> T executeQuery(Function<EntityManager, T> query) {
+		return executeQuery(query, true);
+	}
+
+	/** Executes the given procedure on the database. */
+	private <T> T executeQuery(Function<EntityManager, T> query, boolean createLog) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		EntityTransaction transaction = null;
 
@@ -107,7 +129,9 @@ public class MySQLDatabaseConnection extends Thread {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			LOGGER.error("Failed to execute query", e);
+			if (createLog) {
+				LOGGER.error("Failed to execute query", e);
+			}
 		} finally {
 			em.close();
 		}

@@ -11,7 +11,7 @@
         <property name="hibernate.connection.password">domiklein</property>
 
         <!-- Output settings -->
-        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.show_sql">false</property>
         <property name="hibernate.format_sql">false</property>
 
         <!-- Mappings -->

@@ -29,7 +29,7 @@
         <hibernate.version>5.5.7.Final</hibernate.version>
 
         <!-- Logging -->
-        <slf4j.version>2.0.0-alpha0</slf4j.version>
+        <slf4j.version>2.0.0-alpha5</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
 
         <!-- Testing -->
@@ -173,7 +173,51 @@
                 <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.0.2</version>
+                    <version>3.1.0</version>
+                    <executions>
+                        <execution>
+                            <id>copy-ui-files</id>
+                            <phase>install</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${project.build.directory}/src/ui/dist</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>src/ui/dist</directory>
+                                        <includes>
+                                            <include>**</include>
+                                        </includes>
+                                    </resource>
+                                </resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </resource>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>copy-ui-config</id>
+                            <phase>install</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${project.build.directory}</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>src/main/resources</directory>
+                                        <includes>
+                                            <include>**</include>
+                                        </includes>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -275,13 +319,5 @@
                 </executions>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/ui/dist</directory>
-                <includes>
-                    <include>**</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
 </project>

@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -18,7 +17,7 @@ import com.bugtracker.database.model.constants.Tables;
 public class TicketCommentIdGenerator implements IdentifierGenerator {
 
 	/** The used logger. */
-	private static final Logger LOGGER = LogManager.getLogger(TicketCommentIdGenerator.class);
+	private static final Logger LOGGER = Logger.getLogger(TicketCommentIdGenerator.class);
 
 	@Override
 	public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
