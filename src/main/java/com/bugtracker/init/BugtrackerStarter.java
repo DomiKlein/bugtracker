@@ -24,7 +24,7 @@ public class BugtrackerStarter {
 	private static final Logger LOGGER = Logger.getLogger(BugtrackerStarter.class);
 
 	public static void main(String[] args) {
-		LOGGER.info("Starting initialization...");
+		LOGGER.info("Starting...");
 		setupFailureActions();
 		setupServers();
 	}
@@ -35,7 +35,10 @@ public class BugtrackerStarter {
 	 */
 	private static void setupFailureActions() {
 		// Add hook to properly close all connections on termination
-		Runtime.getRuntime().addShutdownHook(new Thread(BugtrackerInstance::terminate));
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			LOGGER.info("Stopping...");
+			BugtrackerInstance.terminate();
+		}));
 
 		// Handle uncaught exception properly
 		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionLogger());
