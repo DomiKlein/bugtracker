@@ -1,2 +1,2 @@
 #!/bin/bash
-docker exec -it bugtracker_database mysql -uroot -pdomiklein
+mysql -h localhost -u root -p --port=3306 --protocol=tcp bugtracker

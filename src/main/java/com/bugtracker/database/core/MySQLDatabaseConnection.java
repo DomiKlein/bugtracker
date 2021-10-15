@@ -19,8 +19,21 @@ public class MySQLDatabaseConnection extends ExtendedThread {
 	/** The URL of the database */
 	private final String databaseUrl;
 
+	/** The standard port where the database is reachable. */
+	protected static final int STANDARD_PORT = 3306;
+
+	/** The standard username. */
+	protected static final String STANDARD_USERNAME = "root";
+
+	/** The standard password. */
+	protected static final String STANDARD_PASSWORD = "domiklein";
+
+	/** The standard name of the table. */
+	protected static final String STANDARD_TABLE_NAME = "bugtracker";
+
 	/** The standard URL of the database used by Docker. */
-	private static final String STANDARD_DOCKER_DATABASE_URL = "jdbc:mysql://localhost:3306/bugtracker";
+	private static final String STANDARD_DOCKER_DATABASE_URL = String.format("jdbc:mysql://localhost:%d/%s",
+			STANDARD_PORT, STANDARD_TABLE_NAME);
 
 	/** The used logger. */
 	private static final Logger LOGGER = Logger.getLogger(MySQLDatabaseConnection.class);
@@ -34,6 +47,7 @@ public class MySQLDatabaseConnection extends ExtendedThread {
 	/** Use database at standard docker location. */
 	public MySQLDatabaseConnection() {
 		this(STANDARD_DOCKER_DATABASE_URL);
+		LOGGER.info("No database URL given - using standard");
 	}
 
 	/** Use different */
@@ -46,6 +60,7 @@ public class MySQLDatabaseConnection extends ExtendedThread {
 	protected void setup() {
 		try {
 			entityManagerFactory = DatabaseInitializer.initDatabase(databaseUrl);
+			LOGGER.info("Successfully connected to database");
 		} catch (Exception e) {
 			LOGGER.fatal("Could not establish connection to database", e);
 			terminate();
@@ -137,5 +152,10 @@ public class MySQLDatabaseConnection extends ExtendedThread {
 		}
 
 		return null;
+	}
+
+	/** Returns the type of the database. */
+	public EDatabaseType getType() {
+		return EDatabaseType.EXTERNAL;
 	}
 }

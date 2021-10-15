@@ -40,7 +40,7 @@ public class WebserverConnection extends ExtendedThread {
 			webserver.stop();
 			webserver.destroy();
 		} catch (Exception e) {
-			LOGGER.warn("Couldn't terminate webserver", e);
+			LOGGER.warn("Unable to stop webserver (probably already stopped)", e);
 		}
 	}
 }

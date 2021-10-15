@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="BugtrackerStarter - Embedded" type="Application" factoryName="Application">
+    <envs>
+      <env name="-Dcom.bugtracker.database.external" value="true" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.bugtracker.init.BugtrackerStarter" />
+    <module name="bugtracker" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
