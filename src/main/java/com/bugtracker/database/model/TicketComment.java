@@ -10,11 +10,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.bugtracker.database.model.constants.Tables;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class which represent a comment on a {@link Ticket}. */
 @Entity
 @Table(name = Tables.TICKET_COMMENTS)
 @IdClass(TicketComment.TicketCommentKey.class)
+@ExportToTypeScript
 public class TicketComment extends DatabaseEntity {
 
 	/** Column name of the ticket id. */
@@ -32,22 +34,27 @@ public class TicketComment extends DatabaseEntity {
 	@GenericGenerator(name = "depending_incrementer", strategy = "com.bugtracker.database.model.generators.TicketCommentIdGenerator")
 	@GeneratedValue(generator = "depending_incrementer")
 	@Column(name = TICKET_COMMENT_ID_COLUMN_NAME, nullable = false)
+	@JsonProperty(TICKET_COMMENT_ID_COLUMN_NAME)
 	private Integer commentId;
 
 	@ManyToOne
 	@JoinColumn(name = CREATOR_COLUMN_NAME, referencedColumnName = User.USER_ID_COLUMN_NAME, nullable = false)
+	@JsonProperty(value = CREATOR_COLUMN_NAME, required = true)
 	private User creator;
 
 	@Id
 	@ManyToOne
 	@JoinColumn(name = TICKET_COLUMN_NAME, referencedColumnName = Ticket.TICKET_ID_COLUMN_NAME, nullable = false)
+	@JsonProperty(value = TICKET_COLUMN_NAME, required = true)
 	private Ticket ticket;
 
 	@Column(name = COMMENT_COLUMN_NAME, nullable = false, columnDefinition = "mediumtext")
+	@JsonProperty(value = COMMENT_COLUMN_NAME, required = true)
 	private String comment;
 
 	@CreationTimestamp
 	@Column(name = CREATION_TIMESTAMP_COLUMN_NAME, nullable = false)
+	@JsonProperty(CREATION_TIMESTAMP_COLUMN_NAME)
 	private Date creationTimestamp;
 
 	/**

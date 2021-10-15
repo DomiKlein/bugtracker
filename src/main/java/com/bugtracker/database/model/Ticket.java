@@ -7,10 +7,12 @@ import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.bugtracker.database.model.constants.Tables;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class which represents a ticket */
 @Entity
 @Table(name = Tables.TICKETS)
+@ExportToTypeScript
 public class Ticket extends DatabaseEntity {
 
 	/** Column name of the ticket id. */
@@ -31,24 +33,30 @@ public class Ticket extends DatabaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = TICKET_ID_COLUMN_NAME, nullable = false)
+	@JsonProperty(TICKET_ID_COLUMN_NAME)
 	private Integer ticketId;
 
 	@ManyToOne
 	@JoinColumn(name = CREATOR_COLUMN_NAME, referencedColumnName = User.USER_ID_COLUMN_NAME, nullable = false)
+	@JsonProperty(value = CREATOR_COLUMN_NAME, required = true)
 	private User creator;
 
 	@ManyToOne
 	@JoinColumn(name = ASSIGNEE_COLUMN_NAME, referencedColumnName = User.USER_ID_COLUMN_NAME)
+	@JsonProperty(ASSIGNEE_COLUMN_NAME)
 	private User assignee;
 
 	@Column(name = TITLE_COLUMN_NAME, nullable = false)
+	@JsonProperty(value = TITLE_COLUMN_NAME, required = true)
 	private String title;
 
 	@Column(name = DESCRIPTION_COLUMN_NAME, nullable = false, columnDefinition = "mediumtext")
+	@JsonProperty(value = DESCRIPTION_COLUMN_NAME, required = true)
 	private String description;
 
 	@CreationTimestamp
 	@Column(name = CREATION_TIMESTAMP_COLUMN_NAME, nullable = false)
+	@JsonProperty(CREATION_TIMESTAMP_COLUMN_NAME)
 	private Date creationTimestamp;
 
 	/**

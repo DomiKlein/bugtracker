@@ -3,10 +3,12 @@ package com.bugtracker.database.model;
 import javax.persistence.*;
 
 import com.bugtracker.database.model.constants.Tables;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class which represents a user. */
 @Entity
 @Table(name = Tables.USERS)
+@ExportToTypeScript
 public class User extends DatabaseEntity {
 
 	/** Column name of the user id. */
@@ -21,15 +23,19 @@ public class User extends DatabaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = USER_ID_COLUMN_NAME, unique = true, nullable = false)
+	@JsonProperty(value = USER_ID_COLUMN_NAME)
 	private Integer userId;
 
 	@Column(name = USERNAME_COLUMN_NAME, unique = true, nullable = false)
+	@JsonProperty(value = USERNAME_COLUMN_NAME, required = true)
 	private String username;
 
 	@Column(name = FIRST_NAME_COLUMN_NAME, nullable = false)
+	@JsonProperty(value = FIRST_NAME_COLUMN_NAME, required = true)
 	private String firstName;
 
 	@Column(name = LAST_NAME_COLUMN_NAME, nullable = false)
+	@JsonProperty(value = LAST_NAME_COLUMN_NAME, required = true)
 	private String lastName;
 
 	/**

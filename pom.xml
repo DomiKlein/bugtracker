@@ -19,6 +19,7 @@
         <!-- Server -->
         <jetty.version>10.0.1</jetty.version>
         <jersey.version>2.26</jersey.version>
+        <fasterxml.jackson.version>2.13.0</fasterxml.jackson.version>
 
         <!-- API -->
         <javax.ws.rs.version>2.1.1</javax.ws.rs.version>
@@ -90,6 +91,11 @@
                     <artifactId>javax.inject</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${fasterxml.jackson.version}</version>
         </dependency>
         <!-- Used for Jetty logging -->
         <dependency>
@@ -176,13 +182,76 @@
                     </filesets>
                 </configuration>
             </plugin>
+            <!-- Generate TypeScript interfaces from Java classes -->
+            <plugin>
+                <groupId>cz.habarta.typescript-generator</groupId>
+                <artifactId>typescript-generator-maven-plugin</artifactId>
+                <version>2.32.889</version>
+                <executions>
+                    <execution>
+                        <id>generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>process-classes</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jsonLibrary>jackson2</jsonLibrary>
+                    <outputKind>module</outputKind>
+                    <outputFile>src/ui/src/Types.d.ts</outputFile>
+                    <classesWithAnnotations>
+                        <annotation>com.bugtracker.database.model.ExportToTypeScript</annotation>
+                    </classesWithAnnotations>
+                    <optionalProperties>useLibraryDefinition</optionalProperties>
+                </configuration>
+            </plugin>
+            <!-- Run NPM build-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <workingDirectory>src/ui</workingDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>npm-install</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm-build</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>build</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Copy resources -->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>copy-ui-files</id>
-                        <phase>install</phase>
+                        <phase>process-classes</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -191,24 +260,6 @@
                             <resources>
                                 <resource>
                                     <directory>src/ui/dist</directory>
-                                    <includes>
-                                        <include>**</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-ui-config</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/resources</directory>
                                     <includes>
                                         <include>**</include>
                                     </includes>
@@ -251,44 +302,6 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
-            </plugin>
-            <!-- Run NPM build-->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <workingDirectory>src/ui</workingDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>npm-install</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>install</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm-build</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>run</argument>
-                                <argument>build</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
