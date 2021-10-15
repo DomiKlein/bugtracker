@@ -1,6 +1,7 @@
 package com.bugtracker.init;
 
-import com.bugtracker.database.connection.DatabaseConnection;
+import com.bugtracker.database.core.MySQLDatabaseConnection;
+import com.bugtracker.database.core.WebserverConnection;
 
 /**
  * Represents a Bugtracker instance.
@@ -11,14 +12,15 @@ public class BugtrackerInstance {
 	private static BugtrackerInstance INSTANCE = null;
 
 	/** The thread which establishes the database connections. */
-	private final DatabaseConnection databaseConnectionThread;
+	private final MySQLDatabaseConnection databaseConnectionThread;
 
-	/** The thread which runs the Jetty server. */
-	private final Thread jettyServerThread;
+	/** The thread which runs the webserver. */
+	private final WebserverConnection webserverConnection;
 
-	protected BugtrackerInstance(DatabaseConnection databaseConnectionThread, Thread jettyServerThread) {
+	protected BugtrackerInstance(MySQLDatabaseConnection databaseConnectionThread,
+			WebserverConnection webserverConnection) {
 		this.databaseConnectionThread = databaseConnectionThread;
-		this.jettyServerThread = jettyServerThread;
+		this.webserverConnection = webserverConnection;
 	}
 
 	/**
@@ -35,6 +37,13 @@ public class BugtrackerInstance {
 		return INSTANCE;
 	}
 
+	/** Terminates the connection. */
+	protected static void terminate() {
+		INSTANCE.databaseConnectionThread.terminate();
+		INSTANCE.webserverConnection.terminate();
+		INSTANCE = null;
+	}
+
 	/**
 	 * @see #databaseConnectionThread
 	 */
@@ -43,9 +52,9 @@ public class BugtrackerInstance {
 	}
 
 	/**
-	 * @see #jettyServerThread
+	 * @see #webserverConnection
 	 */
-	public Thread getJettyServerThread() {
-		return jettyServerThread;
+	public Thread getWebserverConnection() {
+		return webserverConnection;
 	}
 }
