@@ -27,6 +27,7 @@ public class WebserverConnection extends ExtendedThread {
 	protected void execute() {
 		try {
 			webserver.start();
+			LOGGER.info("Successfully started webserver");
 			webserver.join();
 		} catch (Exception e) {
 			LOGGER.fatal("Webserver connection was closed", e);
