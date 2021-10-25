@@ -9,9 +9,7 @@ module.exports = {
     client: {
       overlay: true,
     },
-    historyApiFallback: {
-      index: "index.html",
-    },
+    historyApiFallback: true,
     compress: true,
     https: true,
     port: 9090,

@@ -19,8 +19,8 @@ export default class SideMenu extends React.Component {
               </Navbar.Brand>
             </Navbar>
           </Container>
-          <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#link">About</Nav.Link>
+          <Nav.Link href="/">Home</Nav.Link>
+          <Nav.Link href="/tickets">Tickets</Nav.Link>
         </Nav>
       </Navbar>
     );

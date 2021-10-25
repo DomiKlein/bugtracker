@@ -1062,6 +1062,11 @@
   "resolved" "https://registry.npmjs.org/@types/estree/-/estree-0.0.50.tgz"
   "version" "0.0.50"
 
+"@types/history@*":
+  "integrity" "sha512-MUc6zSmU3tEVnkQ78q0peeEjKWPUADMlC/t++2bI8WnAG2tvYRPIgHG8lWkXwqc8MsUF6Z2MOf+Mh5sazOmhiQ=="
+  "resolved" "https://registry.npmjs.org/@types/history/-/history-4.7.9.tgz"
+  "version" "4.7.9"
+
 "@types/html-minifier-terser@^6.0.0":
   "integrity" "sha512-NZwaaynfs1oIoLAV1vg18e7QMVDvw+6SQrdJc8w3BwUaoroVSf6EBj/Sk4PBWGxsq0dzhA2drbsuMC1/6C6KgQ=="
   "resolved" "https://registry.npmjs.org/@types/html-minifier-terser/-/html-minifier-terser-6.0.0.tgz"
@@ -1099,6 +1104,23 @@
   "resolved" "https://registry.npmjs.org/@types/react-dom/-/react-dom-17.0.10.tgz"
   "version" "17.0.10"
   dependencies:
+    "@types/react" "*"
+
+"@types/react-router-dom@^5.3.1":
+  "integrity" "sha512-UvyRy73318QI83haXlaMwmklHHzV9hjl3u71MmM6wYNu0hOVk9NLTa0vGukf8zXUqnwz4O06ig876YSPpeK28A=="
+  "resolved" "https://registry.npmjs.org/@types/react-router-dom/-/react-router-dom-5.3.1.tgz"
+  "version" "5.3.1"
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+    "@types/react-router" "*"
+
+"@types/react-router@*":
+  "integrity" "sha512-RNSXOyb3VyRs/EOGmjBhhGKTbnN6fHWvy5FNLzWfOWOGjgVUKqJZXfpKzLmgoU8h6Hj8mpALj/mbXQASOb92wQ=="
+  "resolved" "https://registry.npmjs.org/@types/react-router/-/react-router-5.1.17.tgz"
+  "version" "5.1.17"
+  dependencies:
+    "@types/history" "*"
     "@types/react" "*"
 
 "@types/react-transition-group@^4.4.1":
