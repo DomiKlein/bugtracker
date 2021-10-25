@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ErrorBoundary from "./ErrorBoundary";
-import ErrorExample from "./pages/error/ErrorExample";
+import PageNotFound from "./pages/error/PageNotFound";
 import HomePage from "./pages/home/HomePage";
 import SideMenu from "./pages/SideMenu";
 import TicketsPage from "./pages/tickets/TicketsPage";
@@ -18,16 +18,15 @@ export default class Root extends React.Component {
             </Col>
             <Col className="noPadding">
               <Navbar bg="light" variant="light">
-                <Nav.Link href="/">Home</Nav.Link>
-                <Nav.Link href="/tickets">Tickets</Nav.Link>
+                <Nav.Link href="/causeError">Cause Error</Nav.Link>
               </Navbar>
 
               <Container fluid id="main-container">
                 <ErrorBoundary>
                   <Switch>
-                    <Route path="/error" component={ErrorExample} />
                     <Route path="/tickets" component={TicketsPage} />
                     <Route exact path="/" component={HomePage} />
+                    <Route component={PageNotFound} />
                   </Switch>
                 </ErrorBoundary>
               </Container>
