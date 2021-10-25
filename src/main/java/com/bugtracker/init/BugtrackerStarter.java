@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
+import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -116,6 +117,12 @@ public class BugtrackerStarter {
 	private static WebAppContext prepareWebAppContext() {
 		WebAppContext webapp = new WebAppContext();
 		webapp.setContextPath("/");
+
+		// Let React Router handle wrong pages
+		ErrorPageErrorHandler errorHandler = new ErrorPageErrorHandler();
+		errorHandler.addErrorPage(200, "/index.html");
+		webapp.setErrorHandler(errorHandler);
+
 		webapp.setResourceBase("src/ui/dist");
 		webapp.setWelcomeFiles(new String[] { "index.html" });
 

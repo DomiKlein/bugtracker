@@ -1,18 +1,13 @@
 import React from "react";
 import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import ErrorBoundary from "./ErrorBoundary";
+import ErrorExample from "./pages/error/ErrorExample";
 import HomePage from "./pages/home/HomePage";
 import SideMenu from "./pages/SideMenu";
 import TicketsPage from "./pages/tickets/TicketsPage";
 
 export default class Root extends React.Component {
-  readonly start = "/";
-
   override render() {
     return (
       <Router>
@@ -22,24 +17,19 @@ export default class Root extends React.Component {
               <SideMenu />
             </Col>
             <Col className="noPadding">
-              <Container>
-                <Navbar bg="light" variant="light">
-                  <Nav.Link href="/">Home</Nav.Link>
-                  <Nav.Link href="/tickets">Tickets</Nav.Link>
-                </Navbar>
-                <Container fluid>
+              <Navbar bg="light" variant="light">
+                <Nav.Link href="/">Home</Nav.Link>
+                <Nav.Link href="/tickets">Tickets</Nav.Link>
+              </Navbar>
+
+              <Container fluid id="main-container">
+                <ErrorBoundary>
                   <Switch>
-                    <Route path="/">
-                      <HomePage />
-                    </Route>
-                    <Route path="/tickets">
-                      <TicketsPage />
-                    </Route>
-                    <Route>
-                      <Redirect to="/" />
-                    </Route>
+                    <Route path="/error" component={ErrorExample} />
+                    <Route path="/tickets" component={TicketsPage} />
+                    <Route exact path="/" component={HomePage} />
                   </Switch>
-                </Container>
+                </ErrorBoundary>
               </Container>
             </Col>
           </Row>
