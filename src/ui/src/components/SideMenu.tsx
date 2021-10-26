@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Bug } from "react-bootstrap-icons";
 
+/** Represents the side menu */
 export default class SideMenu extends React.Component {
   override render() {
     return (

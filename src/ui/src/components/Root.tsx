@@ -1,12 +1,14 @@
 import React from "react";
-import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ErrorBoundary from "./ErrorBoundary";
 import PageNotFound from "./pages/error/PageNotFound";
 import HomePage from "./pages/home/HomePage";
-import SideMenu from "./pages/SideMenu";
 import TicketsPage from "./pages/tickets/TicketsPage";
+import SideMenu from "./SideMenu";
+import TopMenu from "./TopMenu";
 
+/** Represents the whole site */
 export default class Root extends React.Component {
   override render() {
     return (
@@ -17,10 +19,7 @@ export default class Root extends React.Component {
               <SideMenu />
             </Col>
             <Col className="noPadding">
-              <Navbar bg="light" variant="light">
-                <Nav.Link href="/causeError">Cause Error</Nav.Link>
-              </Navbar>
-
+              <TopMenu />
               <Container fluid id="main-container">
                 <ErrorBoundary>
                   <Switch>

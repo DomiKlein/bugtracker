@@ -5,6 +5,8 @@ type ErrorComponentProps = {
   error: { message: string; stack?: string };
   header?: string;
 };
+
+/** Represents an error message */
 export default class ErrorComponent extends React.Component<ErrorComponentProps> {
   override render() {
     const { message } = this.props.error;
@@ -15,11 +17,12 @@ export default class ErrorComponent extends React.Component<ErrorComponentProps>
         <p>
           <b>Message:</b> {message}
         </p>
-        {this.getStackTraceMessage()}
+        {this.getStackTrace()}
       </Alert>
     );
   }
 
+  /** Returns the text which should be put in the header */
   private getHeader() {
     const { header } = this.props;
     if (header) {
@@ -27,8 +30,11 @@ export default class ErrorComponent extends React.Component<ErrorComponentProps>
     }
     return "Oops! Something went wrong!";
   }
-
-  private getStackTraceMessage() {
+  /**
+   * Returns an element which represents the stack trace.
+   * May return an empty component if no stack trace should be shown.
+   */
+  private getStackTrace() {
     const { stack } = this.props.error;
     let stackElement = <></>;
     if (stack) {

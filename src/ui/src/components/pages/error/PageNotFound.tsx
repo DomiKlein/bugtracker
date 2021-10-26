@@ -1,6 +1,11 @@
 // @ts-nocheck
 import React from "react";
 import ErrorComponent from "../../ErrorComponent";
+
+/**
+ * Represents an error message which tells the user
+ * that the requested page does not exist
+ */
 export default class PageNotFound extends React.Component {
   override render() {
     const error = {
