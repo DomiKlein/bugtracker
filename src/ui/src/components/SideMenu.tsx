@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
-import { Bug } from "react-bootstrap-icons";
+import { Bug, House, Receipt } from "react-bootstrap-icons";
 
 /** Represents the side menu */
 export default class SideMenu extends React.Component {
@@ -20,8 +20,15 @@ export default class SideMenu extends React.Component {
               </Navbar.Brand>
             </Navbar>
           </Container>
-          <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="/tickets">Tickets</Nav.Link>
+          <Nav.Link href="/">
+            <House size={20} alignmentBaseline="central" />
+            &nbsp; Home
+          </Nav.Link>
+          <Nav.Link href="/tickets">
+            <Receipt size={20} />
+            &nbsp; Tickets
+          </Nav.Link>
+          <Nav.Link href="/causeError">Cause Error</Nav.Link>
         </Nav>
       </Navbar>
     );

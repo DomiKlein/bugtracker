@@ -23,7 +23,23 @@
   padding: 2em 5em;
 }
 
+#top-menu {
+  .dropdown-toggle::after {
+    content: none;
+  }
+
+  .dropdown-menu {
+    left: unset;
+    right: 0;
+  }
+}
+
 #side-menu {
   width: 100% !important;
   height: 100vh !important;
+
+  /** Align to Text */
+  svg {
+    vertical-align: sub;
+  }
 }

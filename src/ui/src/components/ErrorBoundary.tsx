@@ -6,7 +6,7 @@ type ErrorBoundaryState = {
   info?: { componentStack: string };
 };
 
-/** The eror boundary to catch errors of subcomponents */
+/** The error boundary to catch errors of subcomponents */
 export default class ErrorBoundary extends React.Component<
   any,
   ErrorBoundaryState
