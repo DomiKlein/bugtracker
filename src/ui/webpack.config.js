@@ -20,7 +20,6 @@ module.exports = {
       template: "./src/index.html",
       inject: "head",
       scriptLoading: "defer",
-      favicon: "./src/favicon.ico",
     }),
   ],
   module: {
