@@ -17,8 +17,8 @@
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
         <!-- Server -->
-        <jetty.version>10.0.1</jetty.version>
-        <jersey.version>2.26</jersey.version>
+        <jetty.version>11.0.7</jetty.version>
+        <jersey.version>3.0.3</jersey.version>
         <fasterxml.jackson.version>2.13.0</fasterxml.jackson.version>
 
         <!-- API -->
@@ -26,8 +26,8 @@
         <javax.xml.bind.version>2.3.1</javax.xml.bind.version>
 
         <!-- Database -->
-        <mysql.version>8.0.21</mysql.version>
-        <hibernate.version>5.5.7.Final</hibernate.version>
+        <mysql.version>8.0.27</mysql.version>
+        <hibernate.version>5.6.1.Final</hibernate.version>
         <mariaDB4j.version>2.4.0</mariaDB4j.version>
 
         <!-- Logging -->
@@ -35,8 +35,8 @@
         <log4j.version>1.2.17</log4j.version>
 
         <!-- Testing -->
-        <junit.version>5.7.1</junit.version>
-        <assertj.version>3.19.0</assertj.version>
+        <junit.version>5.8.1</junit.version>
+        <assertj.version>3.21.0</assertj.version>
     </properties>
 
     <dependencies>
@@ -168,6 +168,7 @@
         <finalName>bugtracker</finalName>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
@@ -199,7 +200,7 @@
                 <configuration>
                     <jsonLibrary>jackson2</jsonLibrary>
                     <outputKind>module</outputKind>
-                    <outputFile>src/ui/src/Types.d.ts</outputFile>
+                    <outputFile>src/ui/src/DatabaseEntities.d.ts</outputFile>
                     <classesWithAnnotations>
                         <annotation>com.bugtracker.database.model.ExportToTypeScript</annotation>
                     </classesWithAnnotations>
@@ -246,6 +247,7 @@
             </plugin>
             <!-- Copy resources -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
