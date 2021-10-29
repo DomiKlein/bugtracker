@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from "react";
-import ErrorComponent from "../../ErrorComponent";
+import ErrorComponent from "../../error/ErrorComponent";
 
 /**
  * Represents an error message which tells the user

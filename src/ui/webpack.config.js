@@ -1,10 +1,11 @@
 const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const { env } = require("process");
+const mode = env.mode || "development";
 
 module.exports = {
   entry: "./src/index.ts",
-  mode: env.mode ? env.mode : "production",
+  mode: mode,
   devServer: {
     hot: true,
     client: {

@@ -1,12 +1,21 @@
-import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import React, { Suspense } from "react";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import ErrorBoundary from "./ErrorBoundary";
+import ErrorBoundary from "./error/ErrorBoundary";
+import SideMenu from "./menu/SideMenu";
+import TopMenu from "./menu/TopMenu";
 import PageNotFound from "./pages/error/PageNotFound";
 import HomePage from "./pages/home/HomePage";
 import TicketsPage from "./pages/tickets/TicketsPage";
-import SideMenu from "./SideMenu";
-import TopMenu from "./TopMenu";
+
+/** Creates a loader*/
+function Loader(): JSX.Element {
+  return (
+    <Container fluid>
+      <Spinner animation="border" role="status" />
+    </Container>
+  );
+}
 
 /** Represents the whole site */
 export default class Root extends React.Component {
@@ -22,11 +31,14 @@ export default class Root extends React.Component {
               <TopMenu />
               <Container fluid id="main-container">
                 <ErrorBoundary>
-                  <Switch>
-                    <Route path="/tickets" component={TicketsPage} />
-                    <Route exact path="/" component={HomePage} />
-                    <Route component={PageNotFound} />
-                  </Switch>
+                  <Suspense fallback={Loader}>
+                    <Switch>
+                      <Route path="/tickets" component={TicketsPage} />
+                      <Route exact path="/" component={HomePage} />
+                      <Route path="/loader" component={Loader} />
+                      <Route component={PageNotFound} />
+                    </Switch>
+                  </Suspense>
                 </ErrorBoundary>
               </Container>
             </Col>
