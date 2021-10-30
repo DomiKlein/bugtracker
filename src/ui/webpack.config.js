@@ -1,9 +1,11 @@
 const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
+const { env } = require("process");
+const mode = env.mode || "development";
 
 module.exports = {
   entry: "./src/index.ts",
-  mode: "development",
+  mode: mode,
   devServer: {
     hot: true,
     client: {
@@ -45,7 +47,7 @@ module.exports = {
         test: /\.less$/,
         use: ["style-loader", "css-loader", "less-loader"],
       },
-      // Load HTML
+      // Load URLs
       {
         test: /\.(jpg|png|gif|jpeg|woff|woff2|eot|ttf|svg¢)$/,
         use: "url-loader",
@@ -54,12 +56,6 @@ module.exports = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
-    alias: {
-      "../../theme.config$": path.join(
-        __dirname,
-        "src/styles/semantic-theme.config"
-      ),
-    },
   },
   output: {
     filename: "bundle.js",

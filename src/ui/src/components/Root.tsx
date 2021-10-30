@@ -1,12 +1,12 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import ErrorBoundary from "./ErrorBoundary";
-import PageNotFound from "./pages/error/PageNotFound";
+import ErrorBoundary from "./error/ErrorBoundary";
+import SideMenu from "./menu/SideMenu";
+import TopMenu from "./menu/TopMenu";
 import HomePage from "./pages/home/HomePage";
+import PageNotFound from "./pages/PageNotFound";
 import TicketsPage from "./pages/tickets/TicketsPage";
-import SideMenu from "./SideMenu";
-import TopMenu from "./TopMenu";
 
 /** Represents the whole site */
 export default class Root extends React.Component {
