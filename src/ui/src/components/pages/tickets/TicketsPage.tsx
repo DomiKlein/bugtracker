@@ -3,10 +3,7 @@ import BasePage from "../BasePage";
 /** Represents the Tickets page */
 export default class TicketsPage extends BasePage {
   override loadData(): Promise<any> {
-    return new Promise((resolve) => {
-      // TODO: Load tickets via Axios
-      setTimeout(resolve, 5000);
-    });
+    return this.serviceClient.getAllTickets();
   }
 
   override renderContent() {

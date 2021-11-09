@@ -1,18 +1,18 @@
 package com.bugtracker.init;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.HandlerCollection;
+import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.glassfish.jersey.server.ServerProperties;
 
 import com.bugtracker.database.core.EmbeddedDatabaseConnection;
 import com.bugtracker.database.core.MySQLDatabaseConnection;
 import com.bugtracker.database.core.UncaughtExceptionLogger;
 import com.bugtracker.database.core.WebserverConnection;
+import com.bugtracker.services.TicketsService;
 
 /**
  * The main class used to establish the database connection and start all
@@ -84,48 +84,26 @@ public class BugtrackerStarter {
 	 * Prepares the webserver.
 	 */
 	private static Server prepareWebserver() {
-		ServletContextHandler apiContext = prepareApiContext();
-		WebAppContext webAppContext = prepareWebAppContext();
-
-		HandlerCollection handlerCollection = new HandlerCollection();
-		handlerCollection.setHandlers(new Handler[] { apiContext, webAppContext });
-
 		Server webserver = new Server(8080);
-		webserver.setHandler(handlerCollection);
 
-		return webserver;
-	}
-
-	/**
-	 * Creates a {@link ServletContextHandler} which is used for the REST server.
-	 */
-	private static ServletContextHandler prepareApiContext() {
-		ServletContextHandler servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
-		servletContext.setContextPath("/api");
-
-		ServletHolder jerseyServlet = servletContext.addServlet(org.glassfish.jersey.servlet.ServletContainer.class,
-				"/*");
-		jerseyServlet.setInitOrder(0);
-		jerseyServlet.setInitParameter("jersey.config.server.provider.packages", SERVICES_PACKAGE_NAME);
-
-		return servletContext;
-	}
-
-	/**
-	 * Creates a {@link WebAppContext} which is used for the webserver.
-	 */
-	private static WebAppContext prepareWebAppContext() {
-		WebAppContext webapp = new WebAppContext();
-		webapp.setContextPath("/");
+		ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+		webserver.setHandler(contextHandler);
+		contextHandler.setContextPath("/");
 
 		// Let React Router handle wrong pages
 		ErrorPageErrorHandler errorHandler = new ErrorPageErrorHandler();
-		errorHandler.addErrorPage(200, "/index.html");
-		webapp.setErrorHandler(errorHandler);
+		errorHandler.addErrorPage(404, "/index.html");
+		contextHandler.setErrorHandler(errorHandler);
 
-		webapp.setResourceBase("src/ui/dist");
-		webapp.setWelcomeFiles(new String[] { "index.html" });
+		ServletHolder jerseyServlet = contextHandler.addServlet(org.glassfish.jersey.servlet.ServletContainer.class,
+				"/api/*");
+		jerseyServlet.setInitOrder(1);
+		jerseyServlet.setInitParameter(ServerProperties.PROVIDER_CLASSNAMES, TicketsService.class.getCanonicalName());
 
-		return webapp;
+		ServletHolder staticServlet = contextHandler.addServlet(DefaultServlet.class, "/*");
+		staticServlet.setInitParameter("resourceBase", "src/ui/dist");
+		staticServlet.setInitParameter("dirAllowed", "true");
+
+		return webserver;
 	}
 }

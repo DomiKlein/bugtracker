@@ -1,12 +1,20 @@
 import React from "react";
 import { Spinner } from "react-bootstrap";
+import ServiceClient from "../../core/ServiceClient";
+
+type PageProps = {
+  serviceClient: ServiceClient;
+};
 
 type PageState = {
   dataLoaded: boolean;
 };
 
 /** Pages should extends this class.  */
-export default abstract class BasePage extends React.Component<any, PageState> {
+export default abstract class BasePage extends React.Component<
+  PageProps,
+  PageState
+> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -26,6 +34,9 @@ export default abstract class BasePage extends React.Component<any, PageState> {
     this.loadData().then(() => this.setState({ dataLoaded: true }));
   }
 
+  protected get serviceClient() {
+    return this.props.serviceClient;
+  }
   override render() {
     if (!this.state.dataLoaded) {
       return <Loader />;

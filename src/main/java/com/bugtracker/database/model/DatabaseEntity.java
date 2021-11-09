@@ -17,4 +17,22 @@ public abstract class DatabaseEntity {
 	public boolean forceMerge() {
 		return false;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		DatabaseEntity other = (DatabaseEntity) o;
+
+		return getId() != null && other.equals(other.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 }

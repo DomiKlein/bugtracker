@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+import { Ticket } from "../DatabaseEntities";
 
 export default class ServiceClient {
   static readonly headers: Readonly<Record<string, string | boolean>> = {
@@ -18,7 +19,7 @@ export default class ServiceClient {
   private static initHttp(): AxiosInstance {
     const instance = axios.create({
       baseURL: "https://localhost:8080/api",
-      withCredentials: true,
+      withCredentials: false,
     });
 
     instance.interceptors.response.use(
@@ -34,26 +35,12 @@ export default class ServiceClient {
     throw new Error("Failed to execute service call. " + error);
   }
 
+  /** Returns all tickets. */
+  public getAllTickets(): Promise<Ticket[]> {
+    return this.get("/tickets");
+  }
   /** Performs a GET request. */
-  public get<T = any, R = AxiosResponse<T>>(url: string): Promise<R> {
+  private get<T = any, R = AxiosResponse<T>>(url: string): Promise<R> {
     return this.http.get<T, R>(url);
-  }
-
-  /** Performs a POST request. */
-  public post<T = any, R = AxiosResponse<T>>(
-    url: string,
-    data?: T
-  ): Promise<R> {
-    return this.http.post<T, R>(url, data);
-  }
-
-  /** Performs a PUT request. */
-  public put<T = any, R = AxiosResponse<T>>(url: string, data?: T): Promise<R> {
-    return this.http.put<T, R>(url, data);
-  }
-
-  /** Performs a DELETE request. */
-  public delete<T = any, R = AxiosResponse<T>>(url: string): Promise<R> {
-    return this.http.delete<T, R>(url);
   }
 }
