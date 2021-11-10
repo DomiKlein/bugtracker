@@ -13,7 +13,6 @@ module.exports = {
     },
     historyApiFallback: true,
     compress: true,
-    https: true,
     port: 9090,
   },
   devtool: "source-map",

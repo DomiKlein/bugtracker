@@ -1,11 +1,11 @@
 package com.bugtracker.init;
 
+import java.util.EnumSet;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.*;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.servlet.ServletContainer;
 
@@ -13,6 +13,8 @@ import com.bugtracker.database.core.EmbeddedDatabaseConnection;
 import com.bugtracker.database.core.MySQLDatabaseConnection;
 import com.bugtracker.database.core.UncaughtExceptionLogger;
 import com.bugtracker.database.core.WebserverConnection;
+
+import jakarta.servlet.DispatcherType;
 
 /**
  * The main class used to establish the database connection and start all
@@ -94,6 +96,15 @@ public class BugtrackerStarter {
 		ErrorPageErrorHandler errorHandler = new ErrorPageErrorHandler();
 		errorHandler.addErrorPage(404, "/index.html");
 		contextHandler.setErrorHandler(errorHandler);
+
+		// Handle cors
+		FilterHolder crossOriginFilter = contextHandler.addFilter(CrossOriginFilter.class, "/*",
+				EnumSet.of(DispatcherType.REQUEST));
+		crossOriginFilter.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
+		crossOriginFilter.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET,PUT,POST,DELETE,OPTIONS");
+		crossOriginFilter.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM,
+				"Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin");
+		crossOriginFilter.setInitParameter(CrossOriginFilter.CHAIN_PREFLIGHT_PARAM, Boolean.FALSE.toString());
 
 		// Use a Jersey servlet to create the API
 		ServletHolder jerseyServlet = contextHandler.addServlet(ServletContainer.class, "/api/*");
