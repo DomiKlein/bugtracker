@@ -7,12 +7,12 @@ import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.server.ServerProperties;
+import org.glassfish.jersey.servlet.ServletContainer;
 
 import com.bugtracker.database.core.EmbeddedDatabaseConnection;
 import com.bugtracker.database.core.MySQLDatabaseConnection;
 import com.bugtracker.database.core.UncaughtExceptionLogger;
 import com.bugtracker.database.core.WebserverConnection;
-import com.bugtracker.services.TicketsService;
 
 /**
  * The main class used to establish the database connection and start all
@@ -95,14 +95,14 @@ public class BugtrackerStarter {
 		errorHandler.addErrorPage(404, "/index.html");
 		contextHandler.setErrorHandler(errorHandler);
 
-		ServletHolder jerseyServlet = contextHandler.addServlet(org.glassfish.jersey.servlet.ServletContainer.class,
-				"/api/*");
+		// Use a Jersey servlet to create the API
+		ServletHolder jerseyServlet = contextHandler.addServlet(ServletContainer.class, "/api/*");
 		jerseyServlet.setInitOrder(1);
-		jerseyServlet.setInitParameter(ServerProperties.PROVIDER_CLASSNAMES, TicketsService.class.getCanonicalName());
+		jerseyServlet.setInitParameter(ServerProperties.PROVIDER_PACKAGES, SERVICES_PACKAGE_NAME);
 
+		// Use a DefaultServlet to serve static files.
 		ServletHolder staticServlet = contextHandler.addServlet(DefaultServlet.class, "/*");
 		staticServlet.setInitParameter("resourceBase", "src/ui/dist");
-		staticServlet.setInitParameter("dirAllowed", "true");
 
 		return webserver;
 	}

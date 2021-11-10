@@ -12,7 +12,9 @@ public class TicketsService {
 
 	@GET
 	public List<Ticket> getAllTickets() {
-		return null;
+		Ticket t = new Ticket();
+		t.setTitle("Example");
+		return List.of(t);
 	}
 
 }

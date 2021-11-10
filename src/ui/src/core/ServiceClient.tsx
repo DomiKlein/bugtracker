@@ -2,13 +2,6 @@ import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { Ticket } from "../DatabaseEntities";
 
 export default class ServiceClient {
-  static readonly headers: Readonly<Record<string, string | boolean>> = {
-    Accept: "application/json",
-    "Content-Type": "application/json; charset=utf-8",
-    "Access-Control-Allow-Credentials": true,
-    "X-Requested-With": "XMLHttpRequest",
-  };
-
   private http: AxiosInstance;
 
   constructor() {
@@ -19,7 +12,9 @@ export default class ServiceClient {
   private static initHttp(): AxiosInstance {
     const instance = axios.create({
       baseURL: "https://localhost:8080/api",
-      withCredentials: false,
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+      },
     });
 
     instance.interceptors.response.use(
