@@ -38,6 +38,16 @@ public class User extends DatabaseEntity {
 	@JsonProperty(value = LAST_NAME_COLUMN_NAME, required = true)
 	private String lastName;
 
+	protected User() {
+		// Required for fetching entries form database
+	}
+
+	public User(String username, String firstName, String lastName) {
+		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
 	/**
 	 * @see #username
 	 */

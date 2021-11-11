@@ -59,6 +59,16 @@ public class Ticket extends DatabaseEntity {
 	@JsonProperty(CREATION_TIMESTAMP_COLUMN_NAME)
 	private Date creationTimestamp;
 
+	protected Ticket() {
+		// Required for fetching entries form database
+	}
+
+	public Ticket(User creator, String title, String description) {
+		this.creator = creator;
+		this.title = title;
+		this.description = description;
+	}
+
 	/**
 	 * @see #creator
 	 */

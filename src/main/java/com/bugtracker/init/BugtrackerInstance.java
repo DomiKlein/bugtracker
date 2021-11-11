@@ -33,7 +33,7 @@ public class BugtrackerInstance {
 	/**
 	 * Returns the current bugtracker instance.
 	 */
-	protected static BugtrackerInstance getInstance() {
+	public static BugtrackerInstance getInstance() {
 		return INSTANCE;
 	}
 
@@ -47,14 +47,14 @@ public class BugtrackerInstance {
 	/**
 	 * @see #databaseConnectionThread
 	 */
-	public Thread getDatabaseConnectionThread() {
+	public MySQLDatabaseConnection getDatabaseConnectionThread() {
 		return databaseConnectionThread;
 	}
 
 	/**
 	 * @see #webserverConnection
 	 */
-	public Thread getWebserverConnection() {
+	public WebserverConnection getWebserverConnection() {
 		return webserverConnection;
 	}
 }

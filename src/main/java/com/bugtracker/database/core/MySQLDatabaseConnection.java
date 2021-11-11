@@ -1,12 +1,15 @@
 package com.bugtracker.database.core;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 import org.apache.log4j.Logger;
 
@@ -117,6 +120,16 @@ public class MySQLDatabaseConnection extends ExtendedThread {
 	/** Finds the object with the given id. */
 	public <T extends DatabaseEntity> T readData(Class<T> clazz, Serializable id) {
 		return executeQuery((em -> em.find(clazz, id)));
+	}
+
+	/** Returns all entries of a table. */
+	public <T extends DatabaseEntity> List<T> readTable(Class<T> clazz) {
+		return executeQuery((em -> {
+			CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+			CriteriaQuery<T> all = criteriaBuilder.createQuery(clazz);
+			all.from(clazz);
+			return em.createQuery(all).getResultList();
+		}));
 	}
 
 	/** Updates the given object in the database. */
