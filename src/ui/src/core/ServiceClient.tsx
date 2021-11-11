@@ -31,7 +31,7 @@ export default class ServiceClient {
   }
 
   /** Returns all tickets. */
-  public getAllTickets(): Promise<Ticket[]> {
+  public getAllTickets(): Promise<AxiosResponse<Ticket[]>> {
     return this.get("/tickets");
   }
   /** Performs a GET request. */
