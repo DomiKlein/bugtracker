@@ -21,6 +21,7 @@ module.exports = {
       template: "./src/index.html",
       inject: "head",
       scriptLoading: "defer",
+      favicon: "./src/favicon.ico",
     }),
   ],
   module: {
@@ -58,6 +59,6 @@ module.exports = {
   },
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "../resources/public"),
   },
 };

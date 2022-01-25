@@ -28,7 +28,6 @@ export default class SideMenu extends React.Component {
             <Receipt size={20} />
             &nbsp; Tickets
           </Nav.Link>
-          <Nav.Link href="/causeError">Cause Error</Nav.Link>
         </Nav>
       </Navbar>
     );

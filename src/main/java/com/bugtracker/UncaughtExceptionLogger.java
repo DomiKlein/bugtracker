@@ -1,11 +1,12 @@
-package com.bugtracker.database.core;
+package com.bugtracker;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Class also log uncaught exceptions. */
 public class UncaughtExceptionLogger implements Thread.UncaughtExceptionHandler {
 
-	private static final Logger LOGGER = Logger.getLogger(UncaughtExceptionLogger.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UncaughtExceptionLogger.class);
 
 	@Override
 	public void uncaughtException(Thread t, Throwable ex) {

@@ -1,4 +1,4 @@
-package com.bugtracker.database.model.constants;
+package com.bugtracker.database.model.util;
 
 /** Contains all tables names. */
 public final class Tables {

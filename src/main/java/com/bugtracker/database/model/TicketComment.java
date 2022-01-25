@@ -9,7 +9,8 @@ import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
-import com.bugtracker.database.model.constants.Tables;
+import com.bugtracker.database.model.util.ExportToTypeScript;
+import com.bugtracker.database.model.util.Tables;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class which represent a comment on a {@link Ticket}. */
@@ -31,7 +32,7 @@ public class TicketComment extends DatabaseEntity {
 	public static final String CREATION_TIMESTAMP_COLUMN_NAME = "creationTimestamp";
 
 	@Id
-	@GenericGenerator(name = "depending_incrementer", strategy = "com.bugtracker.database.model.generators.TicketCommentIdGenerator")
+	@GenericGenerator(name = "depending_incrementer", strategy = "com.bugtracker.database.model.util.TicketCommentIdGenerator")
 	@GeneratedValue(generator = "depending_incrementer")
 	@Column(name = TICKET_COMMENT_ID_COLUMN_NAME, nullable = false)
 	@JsonProperty(TICKET_COMMENT_ID_COLUMN_NAME)

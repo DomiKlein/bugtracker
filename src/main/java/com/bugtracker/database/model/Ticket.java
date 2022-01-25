@@ -6,7 +6,8 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.bugtracker.database.model.constants.Tables;
+import com.bugtracker.database.model.util.ExportToTypeScript;
+import com.bugtracker.database.model.util.Tables;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class which represents a ticket */

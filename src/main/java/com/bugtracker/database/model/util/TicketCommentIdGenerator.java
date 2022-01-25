@@ -1,4 +1,4 @@
-package com.bugtracker.database.model.generators;
+package com.bugtracker.database.model.util;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -6,18 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bugtracker.database.model.TicketComment;
-import com.bugtracker.database.model.constants.Tables;
 
 public class TicketCommentIdGenerator implements IdentifierGenerator {
 
 	/** The used logger. */
-	private static final Logger LOGGER = Logger.getLogger(TicketCommentIdGenerator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TicketCommentIdGenerator.class);
 
 	@Override
 	public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
