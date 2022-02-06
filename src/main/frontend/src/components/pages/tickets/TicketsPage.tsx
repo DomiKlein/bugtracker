@@ -23,7 +23,7 @@ export default function TicketsPage() {
       {tickets.length > 0 ? (
         <ul>
           {tickets.map((ticket) => (
-            <li key={ticket.id}>{ticket.title}</li>
+            <li key={ticket.ticketId}>{ticket.title}</li>
           ))}
         </ul>
       ) : (

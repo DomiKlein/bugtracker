@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Table(name = Tables.TICKET_COMMENTS)
 @IdClass(TicketComment.TicketCommentKey.class)
 @ExportToTypeScript
-public class TicketComment extends DatabaseEntity {
+public class TicketComment {
 
 	/** Column name of the ticket id. */
 	public static final String TICKET_COMMENT_ID_COLUMN_NAME = "commentId";
@@ -114,11 +114,6 @@ public class TicketComment extends DatabaseEntity {
 		return creationTimestamp;
 	}
 
-	@Override
-	public Object getId() {
-		return getCommentId();
-	}
-
 	/** Represents the key of the table. */
 	public static class TicketCommentKey implements Serializable {
 		protected Integer commentId;
@@ -149,10 +144,5 @@ public class TicketComment extends DatabaseEntity {
 			return Objects.hash(commentId, ticket);
 		}
 
-	}
-
-	@Override
-	public boolean forceMerge() {
-		return true;
 	}
 }

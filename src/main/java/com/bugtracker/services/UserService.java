@@ -15,11 +15,8 @@ public class UserService {
 	@Autowired
 	private UsersRepository usersRepository;
 
-	public User addUser() {
-		int numberOfUsers = getAllUsers().size();
-		User exampleUser = new User("test" + numberOfUsers, "Domi", "Klein");
-		usersRepository.save(exampleUser);
-		return exampleUser;
+	public User createUser(User user) {
+		return usersRepository.save(user);
 	}
 
 	public List<User> getAllUsers() {

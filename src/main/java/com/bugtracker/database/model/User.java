@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = Tables.USERS)
 @ExportToTypeScript
-public class User extends DatabaseEntity {
+public class User {
 
 	/** Column name of the user id. */
 	public static final String USER_ID_COLUMN_NAME = "userId";
@@ -96,10 +96,5 @@ public class User extends DatabaseEntity {
 	 */
 	public String getLastName() {
 		return lastName;
-	}
-
-	@Override
-	public Object getId() {
-		return getUserId();
 	}
 }

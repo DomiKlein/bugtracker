@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.32.889 on 2022-02-05 22:21:44.
+// Generated using typescript-generator version 2.32.889 on 2022-02-06 02:35:52.
 
-export interface Ticket extends DatabaseEntity {
+export interface Ticket {
     ticketId?: number;
     creator: User;
     assignee?: User;
@@ -11,7 +11,7 @@ export interface Ticket extends DatabaseEntity {
     creationTimestamp?: Date;
 }
 
-export interface TicketComment extends DatabaseEntity {
+export interface TicketComment {
     commentId?: number;
     creator: User;
     ticket: Ticket;
@@ -19,14 +19,9 @@ export interface TicketComment extends DatabaseEntity {
     creationTimestamp?: Date;
 }
 
-export interface User extends DatabaseEntity {
+export interface User {
     userId?: number;
     username: string;
     firstName: string;
     lastName: string;
-}
-
-export interface DatabaseEntity {
-    id?: any;
-    detached?: boolean;
 }

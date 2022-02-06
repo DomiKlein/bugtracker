@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = Tables.TICKETS)
 @ExportToTypeScript
-public class Ticket extends DatabaseEntity {
+public class Ticket {
 
 	/** Column name of the ticket id. */
 	public static final String TICKET_ID_COLUMN_NAME = "ticketId";
@@ -138,10 +138,5 @@ public class Ticket extends DatabaseEntity {
 	 */
 	public Date getCreationTimestamp() {
 		return creationTimestamp;
-	}
-
-	@Override
-	public Object getId() {
-		return getTicketId();
 	}
 }
