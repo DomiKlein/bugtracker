@@ -2,8 +2,6 @@ package com.bugtracker.controller;
 
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +35,7 @@ public class TicketsController {
 
 	@ResponseBody
 	@DeleteMapping(path = "/{ticketId}")
-	public Ticket deleteTicket(@PathParam("ticketId") int ticketId) {
+	public Ticket deleteTicket(@PathVariable int ticketId) {
 		return ticketService.deleteTicket(ticketId);
 	}
 }

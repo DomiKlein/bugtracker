@@ -41,17 +41,17 @@ export default class ServiceClient {
   }
 
   /** Creates a ticket. */
-  public createTicket(ticket: Ticket): Promise<AxiosResponse<Ticket[]>> {
+  public createTicket(ticket: Ticket): Promise<AxiosResponse<Ticket>> {
     return this.post("/tickets", ticket);
   }
 
   /** Updates a ticket. */
-  public updateTicket(ticket: Ticket): Promise<AxiosResponse<Ticket[]>> {
+  public updateTicket(ticket: Ticket): Promise<AxiosResponse<Ticket>> {
     return this.put("/tickets", ticket);
   }
 
   /** Deletes a ticket. */
-  public deleteTicket(ticketId: number): Promise<AxiosResponse<Ticket[]>> {
+  public deleteTicket(ticketId: number): Promise<AxiosResponse<Ticket>> {
     return this.delete(`/tickets/${ticketId}`);
   }
 
