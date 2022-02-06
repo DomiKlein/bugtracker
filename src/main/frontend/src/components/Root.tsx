@@ -1,11 +1,11 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import PageNotFound from "./core/PageNotFound";
 import ErrorBoundary from "./error/ErrorBoundary";
 import SideMenu from "./menu/SideMenu";
 import TopMenu from "./menu/TopMenu";
 import HomePage from "./pages/home/HomePage";
-import PageNotFound from "./pages/PageNotFound";
 import TicketsPage from "./pages/tickets/TicketsPage";
 
 /** Represents the whole site */

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Ticket } from "../../../DatabaseEntities";
-import { useServiceClient } from "../Hooks";
-import Loader from "../Loader";
+import { useServiceClient } from "../../core/Hooks";
+import Loader from "../../core/Loader";
 
 /** Represents the Tickets page */
 export default function TicketsPage() {

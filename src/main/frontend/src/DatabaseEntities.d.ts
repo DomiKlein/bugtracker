@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.32.889 on 2022-01-25 02:51:45.
+// Generated using typescript-generator version 2.32.889 on 2022-02-05 22:21:44.
 
 export interface Ticket extends DatabaseEntity {
     ticketId?: number;
