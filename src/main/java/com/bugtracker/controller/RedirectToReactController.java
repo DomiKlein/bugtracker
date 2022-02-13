@@ -1,14 +1,18 @@
 package com.bugtracker.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class RedirectToReactController {
 
-	@RequestMapping(method = RequestMethod.GET, path = "{_:^(?!index\\.html|api).*$}")
-	public String forwardAngularPaths() {
-		return "forward:/index.html";
+	private static final Logger LOGGER = LoggerFactory.getLogger(RedirectToReactController.class);
+
+	@RequestMapping(path = "{_:^(?!resources/index\\.html|api).*$}")
+	public String forward() {
+		LOGGER.info("Forwarded request");
+		return "forward:/resources/index.html";
 	}
 }

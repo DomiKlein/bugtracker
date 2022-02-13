@@ -15,8 +15,10 @@
         <start.class>com.bugtracker.BugtrackerApplication</start.class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>dd.MM.yyyy' 'HH:mm:ss''</maven.build.timestamp.format>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <frontend-src-dir>${project.basedir}/src/main/frontend</frontend-src-dir>
+        <node.version>v16.14.0</node.version>
         <!-- Spring -->
         <spring.version>2.6.3</spring.version>
 
@@ -130,53 +132,69 @@
             </plugin>
             <!-- Run NPM build-->
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.0.0</version>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.12.1</version>
                 <configuration>
-                    <workingDirectory>src/main/frontend</workingDirectory>
+                    <nodeVersion>${node.version}</nodeVersion>
+                    <workingDirectory>${frontend-src-dir}</workingDirectory>
+                    <installDirectory>${project.build.directory}</installDirectory>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>npm-install</id>
-                        <phase>process-classes</phase>
+                        <id>install-node-and-npm</id>
                         <goals>
-                            <goal>exec</goal>
+                            <goal>install-node-and-npm</goal>
                         </goals>
+                    </execution>
+                    <execution>
+                        <id>npm-install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>process-classes</phase>
                         <configuration>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>install</argument>
-                            </arguments>
+                            <arguments>install</arguments>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>npm-build</id>
-                        <phase>process-classes</phase>
+                        <id>build-frontend</id>
                         <goals>
-                            <goal>exec</goal>
+                            <goal>npm</goal>
                         </goals>
+                        <phase>process-classes</phase>
                         <configuration>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>run</argument>
-                                <argument>build</argument>
-                            </arguments>
+                            <arguments>run build</arguments>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <!-- Copy frontend files to target folder -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-frontend-files</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/static/resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${frontend-src-dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
+            <!-- Build an executable JAR -->
             <plugin>
-                <!-- Build an executable JAR -->
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.version}</version>

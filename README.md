@@ -7,9 +7,7 @@
 For running the application locally you need to install the following software:
 
 - Docker
-- Java 8 or newer
-- Maven
-- NPM (node package manager)
+- Java 11 or newer
 
 ### 1. Starting necessary docker container
 
@@ -25,12 +23,11 @@ To shut it down simply run:
 
 In the root folder run:
 
-``mvn clean install``
+``./mvnw clean install``
 
 ### 3. Running the application
 
-The previous step should create a target folder.
-In this folder you can find a ``.jar`` file. 
-Run it with the following command:
+The previous step should create a target folder. In this folder you can find a ``.jar`` file. Run it with the following
+command:
 
 ``mvn -jar target/bugtracker.jar``

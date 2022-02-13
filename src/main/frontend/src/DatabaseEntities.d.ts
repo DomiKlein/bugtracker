@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.32.889 on 2022-02-06 02:35:52.
+// Generated using typescript-generator version 2.32.889 on 2022-02-13 14:47:59.
 
 export interface Ticket {
     ticketId?: number;
