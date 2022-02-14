@@ -19,7 +19,7 @@ module.exports = {
   plugins: [
     new HTMLWebpackPlugin({
       template: "./src/index.html",
-      inject: "head",
+      inject: "body",
       scriptLoading: "defer",
       favicon: "./src/favicon.ico",
     }),

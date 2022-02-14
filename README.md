@@ -30,4 +30,4 @@ In the root folder run:
 The previous step should create a target folder. In this folder you can find a ``.jar`` file. Run it with the following
 command:
 
-``mvn -jar target/bugtracker.jar``
+``java -jar target/bugtracker.jar``
