@@ -12,9 +12,6 @@ export default class ServiceClient {
   private static initHttp(): AxiosInstance {
     const instance = axios.create({
       baseURL: "http://localhost:8080/api",
-      headers: {
-        "X-Requested-With": "XMLHttpRequest",
-      },
     });
 
     instance.interceptors.response.use(

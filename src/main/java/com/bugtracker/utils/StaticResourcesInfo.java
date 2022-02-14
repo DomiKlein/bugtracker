@@ -1,8 +1,11 @@
 package com.bugtracker.utils;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
@@ -10,22 +13,25 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 public class StaticResourcesInfo {
 
 	private final Set<String> resources;
-
 	private final Map<String, String> filenameLookup;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(StaticResourcesInfo.class);
 
 	public StaticResourcesInfo(ClassLoader cl) throws IOException {
 		resources = new HashSet<>();
 		filenameLookup = new HashMap<>();
 
-		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(cl);
-		Resource[] res = resolver.getResources("classpath:/static/*");
+		fillStorage(cl);
+	}
 
-		for (Resource r : res) {
+	private void fillStorage(ClassLoader cl) throws IOException {
+		Resource[] resources = resolveResources(cl);
+		for (Resource r : resources) {
 			String filename = r.getFilename();
 			if (filename == null) {
 				throw new IOException("Filename of static resource cannot be null");
 			}
-			resources.add(filename);
+			this.resources.add(filename);
 
 			String[] fileParts = filename.split("\\.");
 			if (fileParts.length > 2) {
@@ -38,6 +44,16 @@ public class StaticResourcesInfo {
 			} else {
 				filenameLookup.put(filenameWithoutExt, filename);
 			}
+		}
+	}
+
+	private Resource[] resolveResources(ClassLoader cl) throws IOException {
+		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(cl);
+		try {
+			return resolver.getResources("classpath:/static/*");
+		} catch (FileNotFoundException e) {
+			LOGGER.warn("No static resources provided (Exception: '" + e.getMessage() + "')");
+			return new Resource[] {};
 		}
 	}
 
