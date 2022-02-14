@@ -2,14 +2,15 @@ package com.bugtracker.database.model;
 
 import javax.persistence.*;
 
-import com.bugtracker.database.model.constants.Tables;
+import com.bugtracker.database.model.util.ExportToTypeScript;
+import com.bugtracker.database.model.util.Tables;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class which represents a user. */
 @Entity
 @Table(name = Tables.USERS)
 @ExportToTypeScript
-public class User extends DatabaseEntity {
+public class User {
 
 	/** Column name of the user id. */
 	public static final String USER_ID_COLUMN_NAME = "userId";
@@ -95,10 +96,5 @@ public class User extends DatabaseEntity {
 	 */
 	public String getLastName() {
 		return lastName;
-	}
-
-	@Override
-	public Object getId() {
-		return getUserId();
 	}
 }

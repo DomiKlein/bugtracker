@@ -9,7 +9,8 @@ import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
-import com.bugtracker.database.model.constants.Tables;
+import com.bugtracker.database.model.util.ExportToTypeScript;
+import com.bugtracker.database.model.util.Tables;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class which represent a comment on a {@link Ticket}. */
@@ -17,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Table(name = Tables.TICKET_COMMENTS)
 @IdClass(TicketComment.TicketCommentKey.class)
 @ExportToTypeScript
-public class TicketComment extends DatabaseEntity {
+public class TicketComment {
 
 	/** Column name of the ticket id. */
 	public static final String TICKET_COMMENT_ID_COLUMN_NAME = "commentId";
@@ -31,7 +32,7 @@ public class TicketComment extends DatabaseEntity {
 	public static final String CREATION_TIMESTAMP_COLUMN_NAME = "creationTimestamp";
 
 	@Id
-	@GenericGenerator(name = "depending_incrementer", strategy = "com.bugtracker.database.model.generators.TicketCommentIdGenerator")
+	@GenericGenerator(name = "depending_incrementer", strategy = "com.bugtracker.database.model.util.TicketCommentIdGenerator")
 	@GeneratedValue(generator = "depending_incrementer")
 	@Column(name = TICKET_COMMENT_ID_COLUMN_NAME, nullable = false)
 	@JsonProperty(TICKET_COMMENT_ID_COLUMN_NAME)
@@ -113,11 +114,6 @@ public class TicketComment extends DatabaseEntity {
 		return creationTimestamp;
 	}
 
-	@Override
-	public Object getId() {
-		return getCommentId();
-	}
-
 	/** Represents the key of the table. */
 	public static class TicketCommentKey implements Serializable {
 		protected Integer commentId;
@@ -148,10 +144,5 @@ public class TicketComment extends DatabaseEntity {
 			return Objects.hash(commentId, ticket);
 		}
 
-	}
-
-	@Override
-	public boolean forceMerge() {
-		return true;
 	}
 }
