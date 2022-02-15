@@ -10,8 +10,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import com.bugtracker.api.users.UserService;
 import com.bugtracker.database.model.User;
-import com.bugtracker.services.UserService;
 import com.bugtracker.utils.StaticResourcesInfo;
 
 @SpringBootApplication

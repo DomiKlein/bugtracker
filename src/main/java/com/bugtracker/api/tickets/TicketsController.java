@@ -1,4 +1,4 @@
-package com.bugtracker.controller;
+package com.bugtracker.api.tickets;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.bugtracker.database.model.Ticket;
-import com.bugtracker.services.TicketService;
 
 @Controller
 @RequestMapping(path = "/api/tickets")

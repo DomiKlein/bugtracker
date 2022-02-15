@@ -1,4 +1,4 @@
-package com.bugtracker.services;
+package com.bugtracker.api.users;
 
 import java.util.ArrayList;
 import java.util.List;

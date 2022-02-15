@@ -1,4 +1,4 @@
-package com.bugtracker.controller;
+package com.bugtracker.api.users;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.bugtracker.database.model.User;
-import com.bugtracker.services.UserService;
 
 @Controller
 @RequestMapping(path = "/api/users")
