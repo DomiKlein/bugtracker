@@ -10,8 +10,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.bugtracker.database.model.User;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,23 +26,23 @@ public class JwtTokenUtil {
 		String signingKey = System.getProperty("jwt.key");
 		if (signingKey == null) {
 			LOGGER.warn(
-					"Using standard private key to sign JWT tokens. Consider to pass it your own one in via system property 'jwt-key'");
+					"Using standard private key to sign JWT tokens. Consider to pass it your own one in via system property 'jwt.key'");
 			signingKey = env.getProperty("klein.bugtracker.jwt.key");
 		}
 		this.signingKey = signingKey;
 	}
 
 	/** Generates a JWT token for the given user. */
-	public String generateAuthenticationToken(User user) {
+	public String generateAuthenticationToken(UserDetails user) {
 		return generateToken(user, 3, false);
 	}
 
 	/** Generates a JWT token for the given user. */
-	public String generateRefreshToken(User user) {
+	public String generateRefreshToken(UserDetails user) {
 		return generateToken(user, 1440, true); // expires after 1 day
 	}
 
-	private String generateToken(User user, int minutes, boolean isRefreshToken) {
+	private String generateToken(UserDetails user, int minutes, boolean isRefreshToken) {
 		Claims claims = Jwts.claims().setSubject(user.getUsername());
 		claims.put("roles", user.getAuthorities());
 		claims.put("refreshToken", isRefreshToken);

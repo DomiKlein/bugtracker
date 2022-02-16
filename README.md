@@ -31,3 +31,9 @@ The previous step should create a target folder. In this folder you can find a `
 command:
 
 ``java -jar target/bugtracker.jar``
+
+Options:
+
+- Key used to sign JWT tokens
+
+> java -Djwt-key=`[your key]` -jar target/bugtracker.jar

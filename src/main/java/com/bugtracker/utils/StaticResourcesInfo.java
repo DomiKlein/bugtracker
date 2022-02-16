@@ -15,6 +15,7 @@ public class StaticResourcesInfo {
 	private final Set<String> resources;
 	private final Map<String, String> filenameLookup;
 
+	public static final String RESOURCES_FOLDER = "resources";
 	private static final Logger LOGGER = LoggerFactory.getLogger(StaticResourcesInfo.class);
 
 	public StaticResourcesInfo(ClassLoader cl) throws IOException {
@@ -39,18 +40,14 @@ public class StaticResourcesInfo {
 			}
 
 			String filenameWithoutExt = fileParts[0];
-			if (filenameLookup.containsKey(filenameWithoutExt)) {
-				filenameLookup.remove(filenameWithoutExt);
-			} else {
-				filenameLookup.put(filenameWithoutExt, filename);
-			}
+			filenameLookup.put(filenameWithoutExt, filename);
 		}
 	}
 
 	private Resource[] resolveResources(ClassLoader cl) throws IOException {
 		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(cl);
 		try {
-			return resolver.getResources("classpath:/static/*");
+			return resolver.getResources("classpath:/static/" + RESOURCES_FOLDER + "/*");
 		} catch (FileNotFoundException e) {
 			LOGGER.warn("No static resources provided (Exception: '" + e.getMessage() + "')");
 			return new Resource[] {};
@@ -64,7 +61,7 @@ public class StaticResourcesInfo {
 	 */
 	public Optional<String> forward(String filename) {
 		if (resources.contains(filename)) {
-			return Optional.empty();
+			return Optional.of(filename);
 		}
 
 		String lookup = filenameLookup.get(filename);

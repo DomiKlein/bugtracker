@@ -1,23 +1,21 @@
 package com.bugtracker.database.model;
 
-import java.util.Collection;
-import java.util.List;
-
 import javax.persistence.*;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import com.bugtracker.database.model.util.ExportToTypeScript;
 import com.bugtracker.database.model.util.Tables;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Class which represents a user. */
+/**
+ * Class which represents a user.
+ * <p>
+ * <strong>Note: User should not implement UserDetails by themselves as this
+ * would lead to unnecessary TypeScript definitions.</strong>
+ */
 @Entity
 @Table(name = Tables.USERS)
 @ExportToTypeScript
-public class User implements UserDetails {
+public class User {
 
 	/** Column name of the user id. */
 	public static final String USER_ID_COLUMN_NAME = "userId";
@@ -43,7 +41,7 @@ public class User implements UserDetails {
 	private String username;
 
 	@Column(name = PASSWORD_COLUMN_NAME, nullable = false)
-	@JsonProperty(value = PASSWORD_COLUMN_NAME, required = true)
+	@JsonProperty(value = PASSWORD_COLUMN_NAME, required = true, access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 
 	@Column(name = FIRST_NAME_COLUMN_NAME, nullable = false)
@@ -62,10 +60,12 @@ public class User implements UserDetails {
 		// Required for fetching entries form database
 	}
 
-	public User(String username, String firstName, String lastName) {
+	public User(String username, String password, String firstName, String lastName, String role) {
 		this.username = username;
+		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.role = role;
 	}
 
 	/**
@@ -109,13 +109,11 @@ public class User implements UserDetails {
 	/**
 	 * @see #username
 	 */
-	@Override
 	public String getUsername() {
 		return username;
 	}
 
 	/** @see #password */
-	@Override
 	public String getPassword() {
 		return password;
 	}
@@ -137,30 +135,5 @@ public class User implements UserDetails {
 	/** @see #role */
 	public String getRole() {
 		return role;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(role));
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return true;
 	}
 }

@@ -1,5 +1,8 @@
 package com.bugtracker.api.auth;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /** Data object which holds information regarding an authentication. */
 public class AuthenticationRequest {
 
@@ -7,7 +10,9 @@ public class AuthenticationRequest {
 
 	private final String password;
 
-	AuthenticationRequest(String username, String password) {
+	@JsonCreator
+	public AuthenticationRequest(@JsonProperty(value = "username") String username,
+			@JsonProperty(value = "password") String password) {
 		this.username = username;
 		this.password = password;
 	}

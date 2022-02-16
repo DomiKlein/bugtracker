@@ -1,5 +1,7 @@
 package com.bugtracker.config;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,10 +19,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.bugtracker.database.model.User;
 import com.bugtracker.database.repository.UsersRepository;
 import com.bugtracker.filter.JwtTokenFilter;
 import com.bugtracker.filter.StaticResourcesFilter;
+import com.bugtracker.utils.JwtTokenUtil;
 import com.bugtracker.utils.StaticResourcesInfo;
+import com.bugtracker.utils.UserUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +33,7 @@ import com.bugtracker.utils.StaticResourcesInfo;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private StaticResourcesInfo staticResourcesInfo;
+	private JwtTokenUtil jwtTokenUtil;
 
 	@Autowired
 	private UsersRepository usersRepository;
@@ -50,30 +54,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage()))
 				.and()
 				// Configure endpoints authentication
-				.authorizeRequests()
-				// Login requests should always be permitted
+				.authorizeRequests() //
 				.antMatchers("/api/auth/**").permitAll()
 				// All others authenticated
-				// .anyRequest().authenticated() // TODO
+				.anyRequest().authenticated() //
 				.and()
 				// Add filters
-				.addFilterBefore(new JwtTokenFilter(), UsernamePasswordAuthenticationFilter.class) //
-				.addFilterBefore(new StaticResourcesFilter(staticResourcesInfo),
+				.addFilterBefore(new StaticResourcesFilter(new StaticResourcesInfo(this.getClass().getClassLoader())),
+						UsernamePasswordAuthenticationFilter.class) //
+				.addFilterBefore(new JwtTokenFilter(jwtTokenUtil, usersRepository),
 						UsernamePasswordAuthenticationFilter.class);
-	}
 
-	/** Configure web security. */
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		// Prevents "cannot execute" errors in UI
-		web.ignoring().antMatchers("/bundle.js");
 	}
 
 	/** Configure the authentication manager. */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(username -> usersRepository.findByUsername(username)
-				.orElseThrow(() -> new UsernameNotFoundException(String.format("User: '%s' not found", username))));
+		auth.userDetailsService(username -> {
+			Optional<User> user = usersRepository.findByUsername(username);
+			if (user.isEmpty()) {
+				throw new UsernameNotFoundException(String.format("User: '%s' not found", username));
+			}
+			return UserUtils.createUserDetails(user.get());
+		});
 	}
 
 	/**

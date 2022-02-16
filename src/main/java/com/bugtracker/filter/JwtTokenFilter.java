@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,16 +14,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.bugtracker.database.model.User;
 import com.bugtracker.database.repository.UsersRepository;
 import com.bugtracker.utils.JwtTokenUtil;
+import com.bugtracker.utils.UserUtils;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	private final JwtTokenUtil jwtTokenUtil;
+	private final UsersRepository usersRepository;
 
-	@Autowired
-	private UsersRepository usersRepository;
+	public JwtTokenFilter(JwtTokenUtil jwtTokenUtil, UsersRepository usersRepository) {
+		this.jwtTokenUtil = jwtTokenUtil;
+		this.usersRepository = usersRepository;
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -40,8 +43,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 		final String token = header.split(" ")[1].trim();
 
 		// Validate token
-		UserDetails userDetails = usersRepository.findByUsername(jwtTokenUtil.getUsername(token)).orElse(null);
-		if (userDetails == null || !jwtTokenUtil.validate(token, userDetails)) {
+		User user = usersRepository.findByUsername(jwtTokenUtil.getUsername(token)).orElse(null);
+		if (user == null) {
+			chain.doFilter(request, response);
+			return;
+		}
+
+		UserDetails userDetails = UserUtils.createUserDetails(user);
+		if (!jwtTokenUtil.validate(token, userDetails) || jwtTokenUtil.isRefreshToken(token)) {
 			chain.doFilter(request, response);
 			return;
 		}
