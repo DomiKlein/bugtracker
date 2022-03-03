@@ -2,6 +2,7 @@ package com.bugtracker.api.users;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,4 +28,7 @@ public class UserService {
 		return users;
 	}
 
+	public Optional<User> findByUsername(String username) {
+		return usersRepository.findByUsername(username);
+	}
 }

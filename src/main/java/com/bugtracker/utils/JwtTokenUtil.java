@@ -77,7 +77,7 @@ public class JwtTokenUtil {
 	}
 
 	/** Returns a claim from a token. */
-	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+	private <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
 		final Claims claims = getAllClaimsFromToken(token);
 		return claimsResolver.apply(claims);
 	}
@@ -91,7 +91,7 @@ public class JwtTokenUtil {
 	}
 
 	/** Returns whether the token is expired or not. */
-	private boolean isTokenExpired(String token) {
+	public boolean isTokenExpired(String token) {
 		final Date expiration = getExpirationDateFromToken(token);
 		return expiration.before(new Date());
 	}
