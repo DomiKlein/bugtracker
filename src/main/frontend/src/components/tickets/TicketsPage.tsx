@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { Trash } from "react-bootstrap-icons";
-import { Ticket } from "../../../DatabaseEntities";
+import { Ticket } from "../../DatabaseEntities";
 import { useServiceClient } from "../../core/Hooks";
-import Loader from "../../core/Loader";
+import Loader from "../util/Loader";
 
 /** Represents the Tickets page */
 export default function TicketsPage() {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Dropdown, Navbar, NavItem, NavLink } from "react-bootstrap";
 import { PersonFill, PlusSquare } from "react-bootstrap-icons";
-import TicketCreateForm from "../pages/tickets/TicketCreateForm";
+import TicketCreateForm from "../tickets/TicketCreateForm";
 
 /** Represents the top menu */
 export default function TopMenu() {

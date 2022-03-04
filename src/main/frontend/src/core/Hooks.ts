@@ -1,4 +1,4 @@
-import ServiceClient from "../../core/ServiceClient";
+import ServiceClient from "./ServiceClient";
 
 /** Hook for obtaining a service client. */
 export function useServiceClient() {

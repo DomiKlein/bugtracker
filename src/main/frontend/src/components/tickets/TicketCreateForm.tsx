@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import { Ticket, User } from "../../../DatabaseEntities";
+import { Ticket, User } from "../../DatabaseEntities";
 import { useServiceClient } from "../../core/Hooks";
-import Loader from "../../core/Loader";
+import Loader from "../util/Loader";
 
 interface TicketCreateFormProps {
   onClose: () => any;

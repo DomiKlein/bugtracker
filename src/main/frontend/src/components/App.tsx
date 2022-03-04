@@ -1,11 +1,11 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import PageNotFound from "./core/PageNotFound";
+import PageNotFound from "./util/PageNotFound";
 import ErrorBoundary from "./error/ErrorBoundary";
 import SideMenu from "./menu/SideMenu";
 import TopMenu from "./menu/TopMenu";
-import HomePage from "./pages/home/HomePage";
-import TicketsPage from "./pages/tickets/TicketsPage";
+import HomePage from "./home/HomePage";
+import TicketsPage from "./tickets/TicketsPage";
 
 /** Represents the whole site */
 export default function App() {
