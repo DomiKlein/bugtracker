@@ -5,7 +5,7 @@ module.exports = (env) => {
   const mode = env.mode || "development";
 
   return {
-    entry: "./src/index.ts",
+    entry: "./src/index.tsx",
     mode: mode,
     devServer: {
       hot: true,
