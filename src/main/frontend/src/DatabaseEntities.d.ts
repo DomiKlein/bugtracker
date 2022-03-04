@@ -1,6 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.32.889 on 2022-02-16 03:12:58.
+// Generated using typescript-generator version 2.32.889 on 2022-03-04 22:45:46.
+
+export interface AuthenticationResponse {
+    authenticationToken?: string;
+    refreshToken?: string;
+}
 
 export interface Ticket {
     ticketId?: number;

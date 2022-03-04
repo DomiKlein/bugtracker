@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { User } from "../DatabaseEntities";
 import App from "./App";
+import LoginPage from "./login/LoginPage";
 import { userContext } from "./UserContext";
 
 export default function Entry() {
@@ -12,7 +13,7 @@ export default function Entry() {
 
   return (
     <userContext.Provider value={context}>
-      <App />
+      {user ? <App /> : <LoginPage />}
     </userContext.Provider>
   );
 }

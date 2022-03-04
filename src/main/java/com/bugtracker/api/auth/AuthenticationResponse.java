@@ -1,5 +1,8 @@
 package com.bugtracker.api.auth;
 
+import com.bugtracker.database.model.util.ExportToTypeScript;
+
+@ExportToTypeScript
 public class AuthenticationResponse {
 
 	private final String authenticationToken;

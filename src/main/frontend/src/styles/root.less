@@ -11,7 +11,8 @@
 }
 
 /* Main variables - Colors and Fonts */
-@main-color: #255d9c;
+@main-color: #337acc;
+@secondary-color: #444444;
 @main-font: "Futura";
 @alternative-font: "OpenSans";
 
@@ -19,6 +20,18 @@
   padding: 0 !important;
 }
 
+#login-container {
+  background-color: @secondary-color;
+  color: white;
+  padding-top: 20vh;
+  height: 100vh;
+
+  h2 {
+    color: @main-color;
+    font: @main-font;
+    text-align: center;
+  }
+}
 #main-container {
   padding: 2em 5em;
   height: 80vh;

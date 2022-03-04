@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { Ticket, User } from "../DatabaseEntities";
+import { AuthenticationResponse, Ticket, User } from "../DatabaseEntities";
 
 export default class ServiceClient {
   private http: AxiosInstance;
@@ -25,6 +25,13 @@ export default class ServiceClient {
   /** The error handler for requests. */
   private static handleError(error: any) {
     throw new Error("Failed to execute service call. " + error);
+  }
+
+  public login(
+    username: string,
+    password: string
+  ): Promise<AxiosResponse<AuthenticationResponse>> {
+    return this.post("/auth/login", { username, password });
   }
 
   /** Returns all users. */
