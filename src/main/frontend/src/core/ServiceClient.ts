@@ -16,17 +16,9 @@ export default class ServiceClient {
   private static initHttp(): AxiosInstance {
     const instance = axios.create();
 
-    instance.interceptors.response.use(
-      (response) => response,
-      (error) => this.handleError(error)
-    );
+    instance.interceptors.response.use((response) => response);
 
     return instance;
-  }
-
-  /** The error handler for requests. */
-  private static handleError(error: any) {
-    throw new Error("Failed to execute service call. " + error);
   }
 
   public login(

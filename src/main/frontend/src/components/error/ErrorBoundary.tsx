@@ -1,9 +1,9 @@
-import React from "react";
+import React, { ErrorInfo } from "react";
 import ErrorComponent from "./ErrorComponent";
 
 type ErrorBoundaryState = {
-  error?: { message: string; stack: string };
-  info?: { componentStack: string };
+  error?: Error;
+  errorInfo?: ErrorInfo;
 };
 
 /** The error boundary to catch errors of subcomponents */
@@ -11,25 +11,29 @@ export default class ErrorBoundary extends React.Component<
   any,
   ErrorBoundaryState
 > {
-  override state: ErrorBoundaryState;
-
   constructor(props: any) {
     super(props);
     this.state = {};
   }
 
-  static getDerivedStateFromError(error: any) {
-    return { error };
+  override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    this.setState({
+      error: error,
+      errorInfo: errorInfo,
+    });
   }
 
-  override componentDidCatch = (error: any, info: any) => {
-    this.setState({ error, info });
-  };
-
   override render() {
-    const { children } = this.props;
-    const { error } = this.state;
-
-    return error ? <ErrorComponent error={error} /> : children;
+    if (this.state.errorInfo) {
+      // Error path
+      return (
+        <ErrorComponent
+          message={this.state.error && this.state.error.toString()}
+          stack={this.state.errorInfo.componentStack}
+        />
+      );
+    }
+    // Normally, just render children
+    return this.props.children;
   }
 }
