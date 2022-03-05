@@ -1,10 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.32.889 on 2022-03-04 22:45:46.
+// Generated using typescript-generator version 2.32.889 on 2022-03-05 04:00:25.
 
 export interface AuthenticationResponse {
-    authenticationToken?: string;
-    refreshToken?: string;
+    authenticationToken: string;
+    refreshToken: string;
 }
 
 export interface Ticket {
