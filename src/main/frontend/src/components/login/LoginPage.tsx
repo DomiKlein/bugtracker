@@ -9,7 +9,7 @@ export default function LoginPage() {
   const serviceClient = useServiceClient();
 
   const onSubmit = () => {
-    serviceClient.login(username, password);
+    serviceClient.login(username, password).then(res => console.log(res));
   };
 
   return (
@@ -47,7 +47,7 @@ export default function LoginPage() {
             </Form.Group>
 
             <Form.Group className="mb-3" style={{ textAlign: "center" }}>
-              <Button variant="primary" type="submit" onClick={onSubmit}>
+              <Button variant="primary" onClick={onSubmit}>
                 Login
               </Button>
             </Form.Group>

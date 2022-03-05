@@ -4,15 +4,17 @@ import { AuthenticationResponse, Ticket, User } from "../DatabaseEntities";
 export default class ServiceClient {
   private http: AxiosInstance;
 
+  private readonly rootConfig = {
+    baseURL: "http://localhost:8080/api",
+  };
+
   constructor() {
     this.http = ServiceClient.initHttp();
   }
 
   /** Initializes the HTTP client. */
   private static initHttp(): AxiosInstance {
-    const instance = axios.create({
-      baseURL: "http://localhost:8080/api",
-    });
+    const instance = axios.create();
 
     instance.interceptors.response.use(
       (response) => response,
@@ -69,7 +71,12 @@ export default class ServiceClient {
     url: string,
     payload: any
   ): Promise<R> {
-    return this.http.post<T, R>(url, payload);
+    return this.http.post<T, R>(url, payload, {
+      ...this.rootConfig,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 
   /** Performs a PUT request. */

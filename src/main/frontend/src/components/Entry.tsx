@@ -5,11 +5,20 @@ import LoginPage from "./login/LoginPage";
 import { userContext } from "./UserContext";
 
 export default function Entry() {
-  const [user] = useState<User | undefined>();
-  const [mainToken] = useState<string | undefined>();
-  const [refreshToken] = useState<string | undefined>();
+  const [user, setUser] = useState<User | undefined>();
+  const [mainToken, setMainToken] = useState<string | undefined>();
+  const [refreshToken, setRefreshToken] = useState<string | undefined>();
 
-  const context = { user, mainToken, refreshToken };
+  const setContextValues = (
+    user: User,
+    mainToken: string,
+    refreshToken: string
+  ) => {
+    setUser(user);
+    setMainToken(mainToken);
+    setRefreshToken(refreshToken);
+  };
+  const context = { user, mainToken, refreshToken, setUser: setContextValues };
 
   return (
     <userContext.Provider value={context}>
