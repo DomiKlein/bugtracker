@@ -1,10 +1,16 @@
-import { useState } from "react";
-import { User } from "../DatabaseEntities";
+import { Provider } from "react-redux";
 import App from "./App";
-import LoginPage from "./login/LoginPage";
+import store from "../core/store/Store";
+import { persistor } from "../core/store/Store";
+import { PersistGate } from "redux-persist/integration/react";
+import Loader from "./util/Loader";
 
 export default function Entry() {
-  const [user] = useState<User | undefined>();
-
-  return <>{user ? <App /> : <LoginPage />}</>;
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor} loading={<Loader />}>
+        <App />
+      </PersistGate>
+    </Provider>
+  );
 }

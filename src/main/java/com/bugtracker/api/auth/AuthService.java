@@ -31,11 +31,17 @@ public class AuthService {
 
 	public ResponseEntity<AuthenticationResponse> login(AuthenticationRequest request) {
 		try {
-			Authentication authenticate = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+			String username = request.getUsername();
+			Authentication authenticate = authenticationManager
+					.authenticate(new UsernamePasswordAuthenticationToken(username, request.getPassword()));
+
+			Optional<User> u = userService.findByUsername(username);
+			if (u.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
 
 			UserDetails userDetails = (UserDetails) authenticate.getPrincipal();
-			return ResponseEntity.ok().body(generateResponse(userDetails));
+			return ResponseEntity.ok().body(generateResponse(u.get(), userDetails));
 		} catch (BadCredentialsException ex) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
@@ -52,12 +58,13 @@ public class AuthService {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 
-		UserDetails userDetails = UserUtils.createUserDetails(u.get());
-		return ResponseEntity.ok().body(generateResponse(userDetails));
+		User user = u.get();
+		UserDetails userDetails = UserUtils.createUserDetails(user);
+		return ResponseEntity.ok().body(generateResponse(user, userDetails));
 	}
 
-	private AuthenticationResponse generateResponse(UserDetails userDetails) {
-		return new AuthenticationResponse(jwtTokenUtil.generateAuthenticationToken(userDetails),
+	private AuthenticationResponse generateResponse(User user, UserDetails userDetails) {
+		return new AuthenticationResponse(user, jwtTokenUtil.generateAuthenticationToken(userDetails),
 				jwtTokenUtil.generateRefreshToken(userDetails));
 	}
 }

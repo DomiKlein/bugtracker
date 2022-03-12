@@ -6,9 +6,18 @@ import SideMenu from "./menu/SideMenu";
 import TopMenu from "./menu/TopMenu";
 import HomePage from "./home/HomePage";
 import TicketsPage from "./tickets/TicketsPage";
+import { useAppSelector } from "../core/Hooks";
+import { selectCurrentUser } from "../core/store/UserInfoSlice";
+import LoginPage from "./login/LoginPage";
 
 /** Represents the whole site */
 export default function App() {
+  const user = useAppSelector(selectCurrentUser);
+  console.log("Current user: " + user);
+  if (!user) {
+    return <LoginPage />;
+  }
+
   return (
     <Router>
       <Container fluid>

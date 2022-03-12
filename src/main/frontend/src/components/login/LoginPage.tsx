@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Bug } from "react-bootstrap-icons";
-import { useServiceClient } from "../../core/Hooks";
+import { useAppDispatch, useServiceClient } from "../../core/Hooks";
+import { userInfoSlice } from "../../core/store/UserInfoSlice";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const serviceClient = useServiceClient();
+  const dispatch = useAppDispatch();
 
   const onSubmit = () => {
     serviceClient.login(username, password).then((res) => {
-      // TODO
-      console.log(res);
+      dispatch(userInfoSlice.actions.login(res.data));
+
+      const { authenticationToken } = res.data;
+      serviceClient.setAuthToken(authenticationToken);
+      console.log("Logged in");
     });
   };
 
