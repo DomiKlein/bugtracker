@@ -9,7 +9,10 @@ export default function LoginPage() {
   const serviceClient = useServiceClient();
 
   const onSubmit = () => {
-    serviceClient.login(username, password).then((res) => console.log(res));
+    serviceClient.login(username, password).then((res) => {
+      // TODO
+      console.log(res);
+    });
   };
 
   return (

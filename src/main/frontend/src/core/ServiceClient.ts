@@ -1,10 +1,11 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { AuthenticationResponse, Ticket, User } from "../DatabaseEntities";
 
 export default class ServiceClient {
   private http: AxiosInstance;
+  private authToken?: string;
 
-  private readonly rootConfig = {
+  private readonly rootConfig: AxiosRequestConfig = {
     baseURL: "http://localhost:8080/api",
   };
 
@@ -21,11 +22,22 @@ export default class ServiceClient {
     return instance;
   }
 
+  /** Sets the authentication used for later requests. */
+  public setAuthToken(token: string) {
+    this.authToken = token;
+  }
+
+  /** Get JWT tokens. */
   public login(
     username: string,
     password: string
   ): Promise<AxiosResponse<AuthenticationResponse>> {
     return this.post("/auth/login", { username, password });
+  }
+
+  /** Finds a user by a username. */
+  public findByUsername(username: string): Promise<AxiosResponse<User>> {
+    return this.get(`/users/${username}`);
   }
 
   /** Returns all users. */
@@ -55,7 +67,7 @@ export default class ServiceClient {
 
   /** Performs a GET request. */
   private get<T = any, R = AxiosResponse<T>>(url: string): Promise<R> {
-    return this.http.get<T, R>(url);
+    return this.http.get<T, R>(url, this.configWithAuth());
   }
 
   /** Performs a POST request. */
@@ -63,12 +75,7 @@ export default class ServiceClient {
     url: string,
     payload: any
   ): Promise<R> {
-    return this.http.post<T, R>(url, payload, {
-      ...this.rootConfig,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return this.http.post<T, R>(url, payload, this.configWithAuth());
   }
 
   /** Performs a PUT request. */
@@ -76,11 +83,24 @@ export default class ServiceClient {
     url: string,
     payload: any
   ): Promise<R> {
-    return this.http.put<T, R>(url, payload);
+    return this.http.put<T, R>(url, payload, this.configWithAuth());
   }
 
   /** Performs a DELETE request. */
   private delete<T = any, R = AxiosResponse<T>>(url: string): Promise<R> {
-    return this.http.delete<T, R>(url);
+    return this.http.delete<T, R>(url, this.configWithAuth());
+  }
+
+  private configWithAuth(): AxiosRequestConfig {
+    let config = { ...this.rootConfig };
+    if (this.authToken) {
+      config = {
+        ...config,
+        headers: {
+          Bearer: this.authToken,
+        },
+      };
+    }
+    return config;
   }
 }
