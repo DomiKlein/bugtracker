@@ -6,16 +6,16 @@ import SideMenu from "./menu/SideMenu";
 import TopMenu from "./menu/TopMenu";
 import HomePage from "./home/HomePage";
 import TicketsPage from "./tickets/TicketsPage";
-import { useAppSelector } from "../core/Hooks";
+import Login from "./login/Login";
 import { selectCurrentUser } from "../core/store/UserInfoSlice";
-import LoginPage from "./login/LoginPage";
+import { useSelector } from "react-redux";
 
 /** Represents the whole site */
 export default function App() {
-  const user = useAppSelector(selectCurrentUser);
-  console.log("Current user: " + user);
+  const user = useSelector(selectCurrentUser);
+
   if (!user) {
-    return <LoginPage />;
+    return <Login />;
   }
 
   return (

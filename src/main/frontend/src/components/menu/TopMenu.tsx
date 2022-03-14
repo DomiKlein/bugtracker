@@ -6,7 +6,7 @@ import {
   PersonFill,
   PlusSquare,
 } from "react-bootstrap-icons";
-import { useAppDispatch } from "../../core/Hooks";
+import { useDispatch } from "react-redux";
 import { userInfoSlice } from "../../core/store/UserInfoSlice";
 import TicketCreateForm from "../tickets/TicketCreateForm";
 
@@ -14,7 +14,7 @@ import TicketCreateForm from "../tickets/TicketCreateForm";
 export default function TopMenu() {
   const [showTicketCreationDialog, setShowTicketCreationDialog] =
     useState(false);
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const iconSize = 20;
 
   const logout = () => dispatch(userInfoSlice.actions.logout());

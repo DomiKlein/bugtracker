@@ -16,6 +16,10 @@
 @main-font: "Futura";
 @alternative-font: "OpenSans";
 
+* {
+  font: @main-font;
+}
+
 .noPadding {
   padding: 0 !important;
 }
@@ -26,20 +30,27 @@
   padding-top: 20vh;
   height: 100vh;
 
+  h1,
   h2,
   h3 {
-    font: @main-font;
     text-align: center;
   }
 
+  h1 {
+    color: white;
+  }
   h2 {
     color: @main-color;
   }
 }
 #main-container {
   padding: 2em 5em;
-  height: 80vh;
-  overflow: scroll;
+  height: 92vh;
+  overflow-y: auto;
+}
+
+svg {
+  vertical-align: sub;
 }
 
 #top-menu {
@@ -51,22 +62,14 @@
     left: unset;
     right: 0;
 
-    /** Align to Text */
     svg {
-      vertical-align: sub;
       margin-right: 0.5em;
     }
   }
 }
 
 #side-menu {
-  width: 100% !important;
   height: 100vh !important;
-
-  /** Align to Text */
-  svg {
-    vertical-align: sub;
-  }
 }
 
 #ticket-create-dialog {

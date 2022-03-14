@@ -8,11 +8,13 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userInfoReducer from "./UserInfoSlice";
 
+/** Config for store persistor */
 const persistConfig = {
   key: "root",
   storage,
 };
 
+// Creating reducers, bundling them and enabled persisting
 const reducers = combineReducers({ userInfo: userInfoReducer });
 const persistedReducer = persistReducer(persistConfig, reducers);
 const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
@@ -28,9 +30,6 @@ const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
 const store = configureStore({ reducer: rootReducer });
 
 export const persistor = persistStore(store);
-
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
 
 export default store;
