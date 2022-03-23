@@ -19,7 +19,7 @@ public class BugtrackerApplication implements CommandLineRunner {
 	private UserService userService;
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;	
+	private PasswordEncoder passwordEncoder;
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(BugtrackerApplication.class);
 
