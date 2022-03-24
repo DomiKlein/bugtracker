@@ -34,7 +34,7 @@ public class JwtTokenUtil {
 
 	/** Generates a JWT token for the given user. */
 	public String generateAuthenticationToken(UserDetails user) {
-		return generateToken(user, 3, false);
+		return generateToken(user, 1, false);
 	}
 
 	/** Generates a JWT token for the given user. */

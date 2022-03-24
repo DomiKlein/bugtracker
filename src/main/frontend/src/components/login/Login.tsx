@@ -14,9 +14,6 @@ export default function Login() {
   const onSubmit = () => {
     serviceClient.login(username, password).then((res) => {
       dispatch(userInfoSlice.actions.login(res.data));
-
-      const { authenticationToken } = res.data;
-      serviceClient.setAuthToken(authenticationToken);
     });
   };
 

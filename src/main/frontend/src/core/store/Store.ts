@@ -4,7 +4,16 @@ import {
   configureStore,
   Reducer,
 } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userInfoReducer from "./UserInfoSlice";
 
@@ -27,7 +36,15 @@ const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
   return persistedReducer(state, action);
 };
 
-const store = configureStore({ reducer: rootReducer });
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
 
 export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;

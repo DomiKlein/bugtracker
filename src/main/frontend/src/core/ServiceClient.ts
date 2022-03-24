@@ -4,9 +4,19 @@ import { AuthenticationResponse, Ticket, User } from "../DatabaseEntities";
 export default class ServiceClient {
   private http: AxiosInstance;
   private authToken?: string;
+  private refreshToken?: string;
+  private updateCallback: (authToken?: string, refreshToken?: string) => void;
+  private static instance: ServiceClient;
 
   constructor() {
     this.http = this.initHttp();
+    this.updateCallback = () => {
+      return;
+    };
+  }
+
+  public static get Instance(): ServiceClient {
+    return ServiceClient.instance || (ServiceClient.instance = new this());
   }
 
   /** Initializes the HTTP client. */
@@ -18,21 +28,52 @@ export default class ServiceClient {
 
     instance.interceptors.request.use((req) => {
       if (this.authToken) {
-        req.headers = { ...req.headers, Authorization: this.authToken };
+        req.headers = {
+          ...req.headers,
+          Authorization: `Bearer ${this.authToken}`,
+        };
       }
       return req;
     });
+
+    instance.interceptors.response.use(
+      (res) => res,
+      async (error) => {
+        const originalConfig = error.config;
+        if (error.response) {
+          if (
+            error.response.status === 401 &&
+            !originalConfig._retry &&
+            this.refreshToken
+          ) {
+            originalConfig._retry = true;
+            this.refresh(this.refreshToken)
+              .then((res) =>
+                this.updateCallback(
+                  res.data.authenticationToken,
+                  res.data.refreshToken
+                )
+              )
+              .catch(() => this.updateCallback());
+            // TODO : Call actual again
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
     return instance;
   }
 
   /** Sets the authentication used for later requests. */
-  public setAuthToken(token: string) {
-    this.authToken = token;
+  public setAuthTokens(mainToken?: string, refreshToken?: string) {
+    this.authToken = mainToken;
+    this.refreshToken = refreshToken;
   }
 
-  /** Removes all tokens for further requests. */
-  public clearAuth() {
-    this.authToken = undefined;
+  public setUpdateCallback(
+    updateCallback: (authToken?: string, refreshToken?: string) => void
+  ) {
+    this.updateCallback = updateCallback;
   }
 
   /** Get JWT tokens. */
@@ -41,6 +82,13 @@ export default class ServiceClient {
     password: string
   ): Promise<AxiosResponse<AuthenticationResponse>> {
     return this.post("/auth/login", { username, password });
+  }
+
+  /** Refresh JWT tokens. */
+  public refresh(
+    refreshToken: string
+  ): Promise<AxiosResponse<AuthenticationResponse>> {
+    return this.post("/auth/refresh", { refreshToken });
   }
 
   /** Finds a user by a username. */
