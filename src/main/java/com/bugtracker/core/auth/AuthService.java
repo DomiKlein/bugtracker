@@ -3,8 +3,6 @@ package com.bugtracker.core.auth;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,20 +40,20 @@ public class AuthService {
 		return generateResponse(u.get(), userDetails);
 	}
 
-	public ResponseEntity<AuthenticationResponse> refreshToken(String refreshToken) {
+	public AuthenticationResponse refreshToken(String refreshToken) {
 		if (!jwtTokenUtil.isRefreshToken(refreshToken) || jwtTokenUtil.isTokenExpired(refreshToken)) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			return null;
 		}
 
 		String username = jwtTokenUtil.getUsername(refreshToken);
 		Optional<User> u = userService.findByUsername(username);
 		if (u.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			return null;
 		}
 
 		User user = u.get();
 		UserDetails userDetails = UserUtils.createUserDetails(user);
-		return ResponseEntity.ok().body(generateResponse(user, userDetails));
+		return generateResponse(user, userDetails);
 	}
 
 	private AuthenticationResponse generateResponse(User user, UserDetails userDetails) {
