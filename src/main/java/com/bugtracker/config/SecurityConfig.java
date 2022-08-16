@@ -1,7 +1,6 @@
 package com.bugtracker.config;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,32 +8,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.bugtracker.config.filter.JwtTokenFilter;
-import com.bugtracker.config.filter.StaticResourcesFilter;
-import com.bugtracker.config.filter.StaticResourcesInfo;
-import com.bugtracker.core.user.User;
-import com.bugtracker.core.user.UserUtils;
 import com.bugtracker.core.user.UsersRepository;
 import com.bugtracker.utils.JwtTokenUtil;
 
 @Configuration
-@EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
@@ -43,8 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private UsersRepository usersRepository;
 
 	/** Configure http security. */
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 				// Enable CORS and disable CSRF
 				.cors().and().csrf().disable()
@@ -64,23 +56,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated() //
 				.and()
 				// Add filters
-				.addFilterBefore(new StaticResourcesFilter(new StaticResourcesInfo(this.getClass().getClassLoader())),
-						UsernamePasswordAuthenticationFilter.class) //
 				.addFilterBefore(new JwtTokenFilter(jwtTokenUtil, usersRepository),
 						UsernamePasswordAuthenticationFilter.class);
-
-	}
-
-	/** Configure the authentication manager. */
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(username -> {
-			Optional<User> user = usersRepository.findByUsername(username);
-			if (user.isEmpty()) {
-				throw new UsernameNotFoundException(String.format("User: '%s' not found", username));
-			}
-			return UserUtils.createUserDetails(user.get());
-		});
+		return http.build();
 	}
 
 	/**
@@ -92,10 +70,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	/** Authentication manager to perform an authentication. */
-	@Override
 	@Bean
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
 	}
 
 	@Bean

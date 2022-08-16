@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,22 +28,18 @@ public class AuthService {
 	@Autowired
 	private UserService userService;
 
-	public ResponseEntity<AuthenticationResponse> login(AuthenticationRequest request) {
-		try {
-			String username = request.getUsername();
-			Authentication authenticate = authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(username, request.getPassword()));
+	public AuthenticationResponse login(AuthenticationRequest request) {
+		String username = request.getUsername();
+		Authentication authenticate = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(username, request.getPassword()));
 
-			Optional<User> u = userService.findByUsername(username);
-			if (u.isEmpty()) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-			}
-
-			UserDetails userDetails = (UserDetails) authenticate.getPrincipal();
-			return ResponseEntity.ok().body(generateResponse(u.get(), userDetails));
-		} catch (BadCredentialsException ex) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		Optional<User> u = userService.findByUsername(username);
+		if (u.isEmpty()) {
+			return null;
 		}
+
+		UserDetails userDetails = (UserDetails) authenticate.getPrincipal();
+		return generateResponse(u.get(), userDetails);
 	}
 
 	public ResponseEntity<AuthenticationResponse> refreshToken(String refreshToken) {
