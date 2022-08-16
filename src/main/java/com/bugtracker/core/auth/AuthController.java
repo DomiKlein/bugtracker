@@ -1,4 +1,4 @@
-package com.bugtracker.api.auth;
+package com.bugtracker.core.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

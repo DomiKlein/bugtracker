@@ -1,4 +1,4 @@
-package com.bugtracker.api.tickets;
+package com.bugtracker.core.ticket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.bugtracker.core.ticket.Ticket;
-import com.bugtracker.core.ticket.TicketsRepository;
 
 /** Services all around tickets. */
 @Service

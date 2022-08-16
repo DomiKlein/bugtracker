@@ -1,4 +1,4 @@
-package com.bugtracker.api.auth;
+package com.bugtracker.core.auth;
 
 import com.bugtracker.core.user.User;
 import com.bugtracker.utils.ExportToTypeScript;

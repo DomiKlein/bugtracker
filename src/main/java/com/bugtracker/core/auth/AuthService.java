@@ -1,4 +1,4 @@
-package com.bugtracker.api.auth;
+package com.bugtracker.core.auth;
 
 import java.util.Optional;
 
