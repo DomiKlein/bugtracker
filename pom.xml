@@ -144,7 +144,7 @@
                     <outputKind>module</outputKind>
                     <outputFile>src/main/frontend/src/DatabaseEntities.d.ts</outputFile>
                     <classesWithAnnotations>
-                        <annotation>com.bugtracker.database.model.util.ExportToTypeScript</annotation>
+                        <annotation>com.bugtracker.utils.ExportToTypeScript</annotation>
                     </classesWithAnnotations>
                     <optionalProperties>useLibraryDefinition</optionalProperties>
                 </configuration>

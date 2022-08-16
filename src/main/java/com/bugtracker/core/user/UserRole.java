@@ -1,4 +1,4 @@
-package com.bugtracker.database.model.util;
+package com.bugtracker.core.user;
 
 /** Holds constants all around user roles. */
 public final class UserRole {

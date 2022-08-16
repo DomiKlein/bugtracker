@@ -1,8 +1,6 @@
-package com.bugtracker.database.repository;
+package com.bugtracker.core.ticket;
 
 import org.springframework.data.repository.CrudRepository;
-
-import com.bugtracker.database.model.Ticket;
 
 public interface TicketsRepository extends CrudRepository<Ticket, Integer> {
 }

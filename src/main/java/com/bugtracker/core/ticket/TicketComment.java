@@ -1,4 +1,4 @@
-package com.bugtracker.database.model;
+package com.bugtracker.core.ticket;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -9,8 +9,9 @@ import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
-import com.bugtracker.database.model.util.ExportToTypeScript;
-import com.bugtracker.database.model.util.Tables;
+import com.bugtracker.core.Tables;
+import com.bugtracker.core.user.User;
+import com.bugtracker.utils.ExportToTypeScript;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class which represent a comment on a {@link Ticket}. */
@@ -32,7 +33,7 @@ public class TicketComment {
 	public static final String CREATION_TIMESTAMP_COLUMN_NAME = "creationTimestamp";
 
 	@Id
-	@GenericGenerator(name = "depending_incrementer", strategy = "com.bugtracker.database.model.util.TicketCommentIdGenerator")
+	@GenericGenerator(name = "depending_incrementer", strategy = "com.bugtracker.core.ticket.TicketCommentIdGenerator")
 	@GeneratedValue(generator = "depending_incrementer")
 	@Column(name = TICKET_COMMENT_ID_COLUMN_NAME, nullable = false)
 	@JsonProperty(TICKET_COMMENT_ID_COLUMN_NAME)

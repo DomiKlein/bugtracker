@@ -1,4 +1,4 @@
-package com.bugtracker.api.users;
+package com.bugtracker.core.user;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.bugtracker.database.model.User;
-import com.bugtracker.database.repository.UsersRepository;
 
 @Service
 public class UserService {

@@ -1,4 +1,4 @@
-package com.bugtracker.database.model;
+package com.bugtracker.core.ticket;
 
 import java.util.Date;
 
@@ -6,8 +6,9 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.bugtracker.database.model.util.ExportToTypeScript;
-import com.bugtracker.database.model.util.Tables;
+import com.bugtracker.core.Tables;
+import com.bugtracker.core.user.User;
+import com.bugtracker.utils.ExportToTypeScript;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class which represents a ticket */

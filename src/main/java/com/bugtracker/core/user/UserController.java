@@ -1,4 +1,4 @@
-package com.bugtracker.api.users;
+package com.bugtracker.core.user;
 
 import java.util.List;
 
@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import com.bugtracker.database.model.User;
 
 @Controller
 @RequestMapping(path = "/api/users")

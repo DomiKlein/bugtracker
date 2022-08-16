@@ -23,13 +23,13 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.bugtracker.database.model.User;
-import com.bugtracker.database.repository.UsersRepository;
-import com.bugtracker.filter.JwtTokenFilter;
-import com.bugtracker.filter.StaticResourcesFilter;
+import com.bugtracker.config.filter.JwtTokenFilter;
+import com.bugtracker.config.filter.StaticResourcesFilter;
+import com.bugtracker.config.filter.StaticResourcesInfo;
+import com.bugtracker.core.user.User;
+import com.bugtracker.core.user.UserUtils;
+import com.bugtracker.core.user.UsersRepository;
 import com.bugtracker.utils.JwtTokenUtil;
-import com.bugtracker.utils.StaticResourcesInfo;
-import com.bugtracker.utils.UserUtils;
 
 @Configuration
 @EnableWebSecurity

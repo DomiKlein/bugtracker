@@ -1,12 +1,10 @@
-package com.bugtracker.utils;
+package com.bugtracker.core.user;
 
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import com.bugtracker.database.model.User;
 
 /** Utils for {@link User}s */
 public class UserUtils {

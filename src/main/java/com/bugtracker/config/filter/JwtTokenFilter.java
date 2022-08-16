@@ -1,4 +1,4 @@
-package com.bugtracker.filter;
+package com.bugtracker.config.filter;
 
 import java.io.IOException;
 
@@ -14,10 +14,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.bugtracker.database.model.User;
-import com.bugtracker.database.repository.UsersRepository;
+import com.bugtracker.core.user.User;
+import com.bugtracker.core.user.UserUtils;
+import com.bugtracker.core.user.UsersRepository;
 import com.bugtracker.utils.JwtTokenUtil;
-import com.bugtracker.utils.UserUtils;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
 

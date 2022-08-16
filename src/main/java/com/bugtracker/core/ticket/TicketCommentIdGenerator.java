@@ -1,4 +1,4 @@
-package com.bugtracker.database.model.util;
+package com.bugtracker.core.ticket;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -12,7 +12,7 @@ import org.hibernate.id.IdentifierGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bugtracker.database.model.TicketComment;
+import com.bugtracker.core.Tables;
 
 public class TicketCommentIdGenerator implements IdentifierGenerator {
 

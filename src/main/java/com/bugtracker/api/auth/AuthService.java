@@ -12,10 +12,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.bugtracker.api.users.UserService;
-import com.bugtracker.database.model.User;
+import com.bugtracker.core.user.User;
+import com.bugtracker.core.user.UserService;
+import com.bugtracker.core.user.UserUtils;
 import com.bugtracker.utils.JwtTokenUtil;
-import com.bugtracker.utils.UserUtils;
 
 @Service
 public class AuthService {

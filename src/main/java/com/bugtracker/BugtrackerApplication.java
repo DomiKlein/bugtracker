@@ -8,9 +8,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.bugtracker.api.users.UserService;
-import com.bugtracker.database.model.User;
-import com.bugtracker.database.model.util.UserRole;
+import com.bugtracker.core.user.User;
+import com.bugtracker.core.user.UserRole;
+import com.bugtracker.core.user.UserService;
 
 @SpringBootApplication
 public class BugtrackerApplication implements CommandLineRunner {

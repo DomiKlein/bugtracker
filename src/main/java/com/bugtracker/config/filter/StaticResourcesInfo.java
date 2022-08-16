@@ -1,4 +1,4 @@
-package com.bugtracker.utils;
+package com.bugtracker.config.filter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

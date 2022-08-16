@@ -1,4 +1,4 @@
-package com.bugtracker.database.model.util;
+package com.bugtracker.utils;
 
 /**
  * Annotation to signal TypeScript generator that the class should be exported

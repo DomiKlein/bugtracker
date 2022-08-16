@@ -1,7 +1,7 @@
 package com.bugtracker.api.auth;
 
-import com.bugtracker.database.model.User;
-import com.bugtracker.database.model.util.ExportToTypeScript;
+import com.bugtracker.core.user.User;
+import com.bugtracker.utils.ExportToTypeScript;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @ExportToTypeScript

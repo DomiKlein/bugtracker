@@ -1,4 +1,4 @@
-package com.bugtracker.filter;
+package com.bugtracker.config.filter;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import com.bugtracker.utils.StaticResourcesInfo;
 
 /** A filter used to server static resources from the server. */
 public class StaticResourcesFilter extends OncePerRequestFilter {

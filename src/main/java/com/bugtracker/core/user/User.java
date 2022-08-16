@@ -1,9 +1,9 @@
-package com.bugtracker.database.model;
+package com.bugtracker.core.user;
 
 import javax.persistence.*;
 
-import com.bugtracker.database.model.util.ExportToTypeScript;
-import com.bugtracker.database.model.util.Tables;
+import com.bugtracker.core.Tables;
+import com.bugtracker.utils.ExportToTypeScript;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
