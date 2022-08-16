@@ -7,7 +7,6 @@ import java.util.Objects;
 import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 
 import com.bugtracker.core.Tables;
 import com.bugtracker.core.user.User;
@@ -33,8 +32,7 @@ public class TicketComment {
 	public static final String CREATION_TIMESTAMP_COLUMN_NAME = "creationTimestamp";
 
 	@Id
-	@GenericGenerator(name = "depending_incrementer", strategy = "com.bugtracker.core.ticket.TicketCommentIdGenerator")
-	@GeneratedValue(generator = "depending_incrementer")
+	@GeneratedValue
 	@Column(name = TICKET_COMMENT_ID_COLUMN_NAME, nullable = false)
 	@JsonProperty(TICKET_COMMENT_ID_COLUMN_NAME)
 	private Integer commentId;
